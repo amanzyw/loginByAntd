@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-04 08:52:22
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-12 11:21:40
+* @Last Modified time: 2017-09-12 16:27:31
 */
 html, body, :global(#root) {
     height: 100%;
@@ -693,4 +693,36 @@ button[class~=ant-btn-primary]{
 }
 a{
     color:#ff8700;
+}
+.dialog-Modal{
+    position:fixed;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:1000;
+}
+.dialog-Modal.hide{
+    display:none;
+}
+.dialog-Modal .modal-bg{
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background-color:#000;
+    opacity:0.5;
+    filter:alpha(opacity=0.5);
+}
+.dialog-Modal .modal-content{
+    display:flex;
+    display: -webkit-flex;
+    align-items:center;
+    justify-content: center;
+    width:100%;
+    height:100%;
+}
+.ant-spin-dot i{
+    background-color: #ff8700;
 }

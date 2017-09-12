@@ -2,8 +2,11 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 09:10:09
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-11 10:50:52
+* @Last Modified time: 2017-09-12 16:13:04
 */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+}
 
 .clearfix{
     zoom:1;
@@ -987,10 +990,13 @@
 }
 .project_charts{
     margin-top:6px;
+    display:flex;
+    display:-webkit-flex;
+    justify-content: space-between;
+    -webkit-justify-content: space-between;
 }
 .project_charts .charts{
     line-height:34px;
-    padding-right:85px;
 }
 .project_charts .charts.chartes_item2{
     padding-right:0px;
@@ -1013,6 +1019,7 @@
     display:-webkit-flex;
 }
 .ui_group{
+    height: 100%;
     display:inline-block;
     border-right: 1px solid #e9e9e9;
     position:relative;
