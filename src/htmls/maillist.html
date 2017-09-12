@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <script type="text/javascript" src="../scripts/jquery1.9.1.min.js"></script>
+        <script type="text/javascript" src="../scripts/main.js"></script>
+        <link rel="stylesheet" href="../styles/cssrest.css" />
+        <link rel="stylesheet" href="../styles/app.css" />
+        <link rel="stylesheet" href="http://at.alicdn.com/t/font_392605_irdk89uxsf9a4i.css" />
+        <script>
+            $(document).ready(function(){
+                //开启tooltip提示
+                common.tooltip();
+                //树形结构交互
+                var tree_node=function(){
+                    var tree=$("#tree_node");
+                    var caret=tree.find(".ant-select-tree-switcher_open");
+                    var node=tree.find(".ant-select-tree-node-content-wrapper");
+                    caret.on("click",function(){
+                        var isopen=$(this).is(".ant-select-tree-switcher_open");
+                        if(isopen){
+                            $(this).removeClass("ant-select-tree-switcher_open").addClass("ant-select-tree-switcher_close");
+                            $(this).siblings("ul").removeClass("ant-select-tree-child-tree-open");
+                        }else{
+                            $(this).removeClass("ant-select-tree-switcher_close").addClass("ant-select-tree-switcher_open");
+                            $(this).siblings("ul").addClass("ant-select-tree-child-tree-open");
+                        }
+                    });
+                    node.on("click",function(){
+                        var text=$.trim($(this).text());
+                        alert("选中了："+text);
+                    });
+                }
+                tree_node();
+                //左下角头像点击面板
+                common.hoverHeaderPic();
+            });
+        </script>
+    </head>
+    <body>
+        <div id="window" class="window">
+            <div id="viewport" class="viewport">
+                <div class="main_content">
+                    <!-- 头部start -->
+                    <header class="header main_header">
+                        <div id="view_header" class="view_header">
+                            <div class="login_info clearfix">
+                                <div class="logo_model fl clearfix">
+                                    <div class="logo_img fl">
+                                        <img class="logo" src="../images/header/logo.png" alt="柏嘉集团" />
+                                    </div>
+                                    <div class="logo_name fl">中交柏嘉生产经营管理系统</div>
+                                </div>
+                                <div class="user fr">
+                                    <div class="user_model">
+                                        <span class="date">2017年8月22日 星期二</span>
+                                        <span class="welcome">欢迎您，XXXX </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    <!-- 头部end -->
+                    <!-- 左侧start -->
+                    <section id="left_menu" class="left_menu">
+                        <div class="view_left_menu">
+                            <div class="left_menu_model">
+                                <ul id="menus_box" class="menus_box">
+                                    <li class="menu_item">
+                                        <a class="menu_link" data-tooltip="工作台" data-arrow-direction="right" href="./desk.html" target="_self">
+                                            <span class="DaDao DaDao-gongzuotaixuanzhong"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu_item">
+                                        <a class="menu_link" data-tooltip="项目" data-arrow-direction="right" href="./project.html" target="_self">
+                                            <span class="DaDao DaDao-xiangmu"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu_item">
+                                        <a class="menu_link" data-tooltip="应用中心" data-arrow-direction="right" href="./application.html" target="_self">
+                                            <span class="DaDao DaDao-yingyongzhongxin"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu_item">
+                                        <a class="menu_link" data-tooltip="消息" data-arrow-direction="right" href="./message.html" target="_self">
+                                            <span class="DaDao DaDao-xiaoxi1"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu_item active">
+                                        <a class="menu_link" data-tooltip="通讯录" data-arrow-direction="right" href="./maillist.html" target="_self">
+                                            <span class="DaDao DaDao-tongxunlu"></span>
+                                        </a>
+                                    </li>
+                                    <li class="menu_item">
+                                        <a class="menu_link" data-tooltip="查询" data-arrow-direction="right" href="./query.html" target="_self">
+                                            <span class="DaDao DaDao-dwcxico"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="menu_setting">
+                                    <div class="setting_item setting_u">
+                                        <a class="setting_link" data-tooltip="后台管理" data-arrow-direction="right" href="../../admin/htmls/login.html" target="admin">
+                                            <span class="DaDao DaDao-houtai-kehuguanli"></span>
+                                        </a>
+                                    </div>
+                                    <!-- <div class="setting_item setting_t">
+                                        <a class="setting_link" data-tooltip="用户设置" data-arrow-direction="right" href="javascript:void(0);">
+                                            <span class="DaDao DaDao-gerenshezhi"></span>
+                                        </a>
+                                    </div> -->
+                                    <div id="setting_me" class="setting_me">
+                                        <div class="tick">
+                                            <img class="head_pic" src="../images/examples/3401888993773024.jpg" src="" alt="" />
+                                        </div>
+                                        <div style="display:none;" class="ui_user_panel">
+                                            <ul class="ui_user_list">
+                                                <li class="panel_item">
+                                                    <a href="personal_setting.html" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
+                                                </li>
+                                                <li class="panel_item">
+                                                    <a href="reset_psd.html" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
+                                                </li>
+                                                <li class="panel_item">
+                                                    <a href="account_bind.html" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
+                                                </li>
+                                                <li class="panel_item bd_none">
+                                                    <a href="message_tips.html" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
+                                                </li>
+                                                <li class="line"></li>
+                                                <li class="panel_item quot">
+                                                    <a href="javascript:void(0);" class="block atance" target="_self">退出系统</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- 左侧end -->
+                    <!--内容区域start-->
+                    <section id="main_body" class="main_body">
+                        <div class="view_main_body">
+                            <div class="body_inner default_width">
+                                <div class="mail_list_box mail_content">
+                                    <div class="display_box box_wrap">
+                                        <div class="ui_group">
+                                            <div class="group_text">组织架构</div>
+                                            <div id="tree_node" class="ant-select-dropdown ant-select-tree-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft">
+                                                <div>
+                                                    <ul class="ant-select-tree" role="tree-node" unselectable="true">
+                                                        <li class="">
+                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher_open"></span>
+                                                            <span title="parent 1" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-open">
+                                                                <span class="ant-select-tree-title">中交柏嘉工程技术研究院</span>
+                                                            </span>
+                                                            <ul class="ant-select-tree-child-tree ant-select-tree-child-tree-open" data-expanded="true">
+                                                                <li class="">
+                                                                    <span class="ant-select-tree-switcher ant-select-tree-switcher_open">
+                                                                    </span>
+                                                                    <span title="parent 1-0" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-open">
+                                                                        <span class="ant-select-tree-title">生产部</span>
+                                                                    </span>
+                                                                    <ul class="ant-select-tree-child-tree ant-select-tree-child-tree-open" data-expanded="true">
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop"></span>
+                                                                            <span title="my leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">西安分院</span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">四川分院</span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">武汉分院</span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">浙江分院</span>
+                                                                            </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                                <li class="">
+                                                                    <span class="ant-select-tree-switcher ant-select-tree-switcher_open"></span>
+                                                                    <span title="parent 1-1" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-open">
+                                                                        <span class="ant-select-tree-title">经营部</span>
+                                                                    </span>
+                                                                    <ul class="ant-select-tree-child-tree ant-select-tree-child-tree-open" data-expanded="true">
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">生产经营管理部</span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">技术质量管理部</span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">财务管理部</span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">法律审查部</span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">行政管理部</span>
+                                                                            </span>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                            </span>
+                                                                            <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                                <span class="ant-select-tree-title">总裁办</span>
+                                                                            </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="slide_div">
+                                                <div class="swap_out"><span class="DaDao DaDao-icon_arrow_left"></span></div>
+                                            </div> -->
+                                        </div>
+                                        <div class="mail_content_inner">
+                                            <div class="group_by">
+                                                <div class="ui_router">
+                                                    <span class="route_item">中交柏嘉工程技术研究院</span>
+                                                    <span class="arrow">&gt;&gt;</span>
+                                                    <span class="route_item">生产部</span>
+                                                    <span class="arrow">&gt;&gt;</span>
+                                                    <span class="route_item active">西安分院</span>
+                                                </div>
+                                                <div class="group_table">
+                                                    <div class="desk_table table">
+                                                        <table class="ui_table dadao_table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>姓名</th>
+                                                                    <th>电话</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="2">
+                                                                        <div class="empty">
+                                                                            <div class="dadao_empty"></div>
+                                                                            <div class="empty_text">暂时没有待处理的事项</div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a class="menber" href="javascript:void(0);">
+                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
+                                                                        </a>
+                                                                        张有为
+                                                                    </td>
+                                                                    <td>13484538788</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a class="menber" href="javascript:void(0);">
+                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
+                                                                        </a>
+                                                                        张有为
+                                                                    </td>
+                                                                    <td>13484538788</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a class="menber" href="javascript:void(0);">
+                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
+                                                                        </a>
+                                                                        张有为
+                                                                    </td>
+                                                                    <td>13484538788</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a class="menber" href="javascript:void(0);">
+                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
+                                                                        </a>
+                                                                        张有为
+                                                                    </td>
+                                                                    <td>13484538788</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!--内容区域end-->
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
