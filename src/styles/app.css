@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 09:10:09
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-12 16:13:04
+* @Last Modified time: 2017-09-12 17:44:16
 */
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0)
@@ -67,7 +67,7 @@
 .user_model{
     color:#fff;
     line-height:60px;
-    font-size:12px;
+    font-size:14px;
     margin-right:80px;
 }
 .user_model .quot{
@@ -233,7 +233,7 @@
 }
 .ui_user_panel .panel_item .atance{
     color:#666;
-    font-size:12px;
+    font-size:14px;
     padding-left:0px;
     transition:padding-left ease 0.2s;
     -webkit-transition:padding-left ease 0.2s;
@@ -269,7 +269,7 @@
     z-index: 1060;
     display: block;
     visibility: visible;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5;
 }
 .dadao_tooltip_content{
@@ -332,7 +332,7 @@
     margin: 0;
     padding: 0 4px;
     margin-top: -4px;
-    font-size: 12px;
+    font-size: 14px;
 }
 .ant-select-tree li{
     padding: 0;
@@ -574,7 +574,7 @@
 }
 .dadao_switch_inner{
     color: #fff;
-    font-size: 12px;
+    font-size: 14px;
     margin-left: 24px;
     margin-right: 6px;
     display: block;
@@ -593,7 +593,7 @@
 
 
 .dadao_panel{
-    font-size:12px;
+    font-size:14px;
     color:#666;
     border:1px solid #ebebeb;
     padding:13px;
@@ -780,7 +780,7 @@
     margin-bottom:10px;
 }
 .form_header_text{
-    font-size:12px;
+    font-size:14px;
     color:#666;
 }
 .form_input_box{
@@ -1427,7 +1427,7 @@
     white-space:nowrap;
     padding:0 12px;
     line-height:36px;
-    font-size:12px;
+    font-size:14px;
     transition:transform 0.3s ease-in-out;
     -webkit-transition:transform 0.3s ease-in-out;
     -moz-transition:transform 0.3s ease-in-out;
@@ -1532,7 +1532,7 @@
     border-spacing:0;
 }
 .dadao_table_shit tbody td,.dadao_table_shit tbody th{
-    font-size:12px;
+    font-size:14px;
     border:1px dashed #c7c7c7;
     box-sizing:border-box;
     padding:12px 16px;
@@ -1708,7 +1708,7 @@
     top: 50%;
     margin-top: 26px;
     color: #767676;
-    font-size: 12px;
+    font-size: 14px;
 }
 .manage_getin_detail .getin_cell{
     margin-bottom:16px;
@@ -1834,7 +1834,7 @@
 .account_setting_box .account_label{
     width:230px;
     color: #aaa;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 20px;
 }
 .setting_me_list .account_item .cell_title{
@@ -1990,7 +1990,7 @@
 }
 .message_setting_cell .imsg .itxt{
     color:red;
-    font-size:12px;
+    font-size:14px;
 }
 .message_setting_cell .imsg .itxt.open{
     color:#ff8700;

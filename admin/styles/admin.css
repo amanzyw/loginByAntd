@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-31 14:11:49
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-05 17:03:43
+* @Last Modified time: 2017-09-12 17:53:00
 */
 .login_header{
     height:70px;
@@ -248,7 +248,7 @@
     margin: 0;
     padding: 0 4px;
     margin-top: -4px;
-    font-size: 12px;
+    font-size: 14px;
 }
 .ant-select-tree li{
     padding: 0;

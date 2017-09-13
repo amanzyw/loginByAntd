@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 09:10:09
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-08-31 10:07:36
+* @Last Modified time: 2017-09-12 17:44:38
 */
 
 .clearfix{
@@ -260,7 +260,7 @@
     margin: 0;
     padding: 0 4px;
     margin-top: -4px;
-    font-size: 12px;
+    font-size: 14px;
 }
 .ant-select-tree li{
     padding: 0;
