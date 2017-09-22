@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 09:10:09
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-12 17:44:16
+* @Last Modified time: 2017-09-21 10:45:40
 */
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0)
@@ -340,6 +340,7 @@
     list-style: none;
     white-space: nowrap;
     outline: 0;
+    font-size: 0;
 }
 .ant-select-tree li span.ant-select-tree-iconEle, .ant-select-tree li span.ant-select-tree-switcher{
         margin: 0;
@@ -359,7 +360,12 @@
 }
 .ant-select-tree li .ant-select-tree-node-content-wrapper{
     display: inline-block;
-    padding: 3px 5px;
+    font-size:14px;
+    border:1px solid transparent;
+    vertical-align: middle;
+    margin-left: -6px;
+    padding-left:10px;
+    padding: 2px 5px;
     border-radius: 2px;
     margin: 0;
     cursor: pointer;
@@ -370,8 +376,12 @@
     width: calc(100% - 24px);
     transition:background-color 0.3s ease;
 }
+.ant-select-tree li .ant-tree-selected{
+    background-color:#f9f9f9;
+    border: 1px solid #ddd;
+}
 .ant-select-tree li .ant-select-tree-node-content-wrapper:hover{
-    background-color:#e8e8e8;
+    background-color:#f5f5f5;
     transition:background-color 0.3s ease;
 }
 .ant-select-tree li ul{
@@ -782,6 +792,7 @@
 .form_header_text{
     font-size:14px;
     color:#666;
+    font-weight:700;
 }
 .form_input_box{
     width:163px;
@@ -797,13 +808,24 @@
 }
 
 .dadao_select{
-    cursor:pointer;
-    outline:none;
-    padding: 4px 10px;
+    cursor: pointer;
+    outline: none;
+    display: block;
     width: 100%;
-    height: 28px;
-    border:1px solid #d9d9d9;
-    border-radius:3px;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 .dadao_select:focus,.dadao_select:hover {
     /* border-color: #ff8700 */
@@ -813,6 +835,12 @@
     -webkit-box-shadow: 0 0 0 2px rgba(255,135,0,.2);
     -moz-box-shadow: 0 0 0 2px rgba(255,135,0,.2);
     -ms-box-shadow: 0 0 0 2px rgba(255,135,0,.2); */
+    outline: 0;
+    border-color:#ff8700;
+    box-shadow: 0 0 0 2px rgba(255,135,0,.2);
+    -webkit-box-shadow: 0 0 0 2px rgba(255,135,0,.2);
+    -moz-box-shadow: 0 0 0 2px rgba(255,135,0,.2);
+    -ms-box-shadow: 0 0 0 2px rgba(255,135,0,.2);
 }
 .dadao_select_lg{
     padding: 6px 10px;
@@ -873,7 +901,7 @@
     border-bottom:1px solid #ddd;
 }
 .desk_pager_outer{
-    padding:45px 20px 25px;
+    padding:45px 0px 25px;
     text-align: right;
 }
 .desk_content{
@@ -939,21 +967,50 @@
 }
 .ui_table>thead>tr>th{
     word-break: break-all;
-    background-color:#f8f8f8;
-    border:1px solid #eee;
-    font-size: 14px;
+    background-color:#fff;
+    font-size: 13px;
 }
 .ui_table>tbody>tr>td{
     -webkit-transition: all .3s;
     transition: all .3s;
-    font-size:14px;
+    font-size:13px;
     padding:12px 8px;
 }
+.ui_table.table_default>tbody>tr>td{
+    /* padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd; */
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+    padding: 12px 8px;
+    vertical-align: top;
+    color:rgba(0, 0, 0, 0.65);
+}
+.table_hover>tbody>tr:hover {
+    background-color: #f5f5f5;
+}
+.table_fixed{
+    table-layout:fixed;
+}
+.table_bordered{
+    border: 1px solid #ddd;
+}
+.table_bordered>tbody>tr>td, .table_bordered>tbody>tr>th, .table_bordered>tfoot>tr>td, .table_bordered>tfoot>tr>th, .table_bordered>thead>tr>td, .table_bordered>thead>tr>th{
+        border: 1px solid #ddd;
+}
+.ui_table.table_default>thead>tr>th{
+    border-bottom:2px solid #ddd;
+}
+.ui_table.table_striped>tbody>tr:nth-of-type(odd) {
+    background-color: #f9f9f9;
+}
 .ui_table>tbody>tr:first-child>td{
-    padding-top:18px;
+    /* padding-top:18px; */
 }
 .ui_table>tbody>tr:hover{
-    background-color:#fafafa;
+    /* background-color:#fafafa; */
 }
 .desk_table .detail{
     margin-right:10px;
@@ -961,6 +1018,7 @@
 .empty{
     width:100%;
     text-align:center;
+    padding:8px 0;
 }
 .dadao_empty{
     height:70px;
@@ -968,9 +1026,8 @@
 }
 .empty .empty_text{
     line-height:30px;
-    margin-top:12px;
     color: #666;
-    font-size: 16px;
+    font-size: 15px;
 }
 .empty .DaDao{
     font-size:32px;
@@ -1950,10 +2007,11 @@
 }
 .weixin_img_box .bind_wx .wx_inner{
     text-align:center;
-    padding:18px 0;
+    padding:18px 0 12px;
 }
 .weixin_img_box .bind_wx .state{
     color:#666;
+    margin: 0 0 6px;
 }
 .setting_cell .uname .key,.setting_cell .me_info_control .control_label{
     color:#777;

@@ -279,6 +279,9 @@
     clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
     clip: rect(1px,1px,1px,1px);
 }
+.webuploader-element-invisible~.fileUpLoaderPanel{
+    margin-bottom:0;
+}
 .webuploader-pick {
     position: relative;
     display: inline-block;
@@ -308,6 +311,7 @@
 .fileUpLoaderPanel{
     width:200px;
     margin-top: -80px;
+    margin-bottom:80px;
     position:relative;
     background-color:#fff;
 }

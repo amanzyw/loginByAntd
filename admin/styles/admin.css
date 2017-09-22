@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-31 14:11:49
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-12 17:53:00
+* @Last Modified time: 2017-09-19 14:28:51
 */
 .login_header{
     height:70px;
@@ -72,6 +72,8 @@
     color:#ff8700;
     background-color:#fff;
     opacity:1;
+    border-radius:2px;
+    box-shadow:1px 1px 3px 1px rgba(0,0,0,0.3);
 }
 .rotate_item:nth-child(1){
     color:#be182b;
@@ -81,6 +83,9 @@
 }
 .rotate_item:nth-child(3){
     color:#207a0b;
+}
+.rotate_item:nth-child(4){
+    color:#000;
 }
 .login_form{
     position:absolute;

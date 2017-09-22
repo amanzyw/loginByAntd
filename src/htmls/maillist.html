@@ -31,6 +31,8 @@
                     });
                     node.on("click",function(){
                         var text=$.trim($(this).text());
+                        tree.find(".ant-tree-selected").removeClass("ant-tree-selected");
+                        $(this).addClass("ant-tree-selected");
                         alert("选中了："+text);
                     });
                 }
@@ -264,7 +266,11 @@
                                                 </div>
                                                 <div class="group_table">
                                                     <div class="desk_table table">
-                                                        <table class="ui_table dadao_table">
+                                                        <div class="empty">
+                                                            <div class="dadao_empty"></div>
+                                                            <div class="empty_text">暂时没有待处理的事项</div>
+                                                        </div>
+                                                        <table class="ui_table dadao_table table_default table_striped table_hover table_bordered">
                                                             <thead>
                                                                 <tr>
                                                                     <th>姓名</th>
@@ -272,14 +278,6 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr>
-                                                                    <td colspan="2">
-                                                                        <div class="empty">
-                                                                            <div class="dadao_empty"></div>
-                                                                            <div class="empty_text">暂时没有待处理的事项</div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
                                                                 <tr>
                                                                     <td>
                                                                         <a class="menber" href="javascript:void(0);">

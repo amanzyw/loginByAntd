@@ -88,8 +88,66 @@
                             },300);
                         });
                 }
+                //项目终止
+                var project_change=function(){
+                    var dialog=null;
+                    var html= '<div id="project_change" class="project_change">';
+                        html+=    '<div class="dadao_modal_mask"></div>';
+                        html+=    '<div id="project_dialog" class="project_dialog">';
+                        html+=        '<div class="project_dia_tit">项目变更<div class="fr"><a class="iblock btn_close" href="javascript:void(0);">&times;</a></div></div>';
+                        html+=        '<div class="form_panel">';
+                        html+=            '<div class="form_control"><label class="iblock form_label">项目名称</label><div class="iblock form_input"><input class="dadao_input" value="XXXXX滨江路二期工程优化设计项目" readonly="readonly"/></div></div>';
+                        html+=            '<div class="form_control"><label class="iblock form_label">项目编号</label><div class="iblock form_input"><input class="dadao_input" value=" 20170810-JY-001" readonly="readonly"/></div></div>';
+                        html+=            '<div class="form_control"><label class="iblock form_label">项目负责人</label><div class="iblock form_input"><input class="dadao_input" value="李四" readonly="readonly"/></div></div>';
+                        html+=            '<div class="form_control"><label class="iblock form_label">变更负责人</label><div class="iblock form_input"><select class="dadao_select"><option>赵先生</option><option>钱先生</option><option>孙先生</option></select></div></div>';
+                        html+=            '<div class="form_control"><label class="iblock form_label vertop">变更原因</label><div class="iblock form_input"><textarea class="dadao_textarea" placeholder="请输入变更原因"></textarea></div></div>';
+                        html+=            '<div class="form_control"><label class="iblock form_label">经办人</label><div class="iblock form_input"><input class="dadao_input" value="张三" readonly="readonly"/></div></div>';
+                        html+=            '<div class="form_control"><label class="iblock form_label">经办时间</label><div class="iblock form_input"><input class="dadao_input" value="2017-08-28" readonly="readonly"/></div></div>';
+                        html+=            '<div class="form_control"><label class="iblock form_label"></label><div class="iblock form_input"><div class="iblock btn"><button class="dadao_btn dadao_btn_info">确定</button></div><div class="iblock btn"><button class="dadao_btn dadao_btn_default hover_none">取消</button></div></div></div>';
+                        html+=        '</div>';
+                        html+=    '</div>';
+                        html+='</div>';
+                        $("#projectChange").on("click",function(){
+                            $("body").append(html);
+                            dialog=$("#project_dialog");
+                            dialog.draggable({
+                                "handle":".project_dia_tit"
+                            });
+                            dialog.addClass("antZoomIn");
+                            dialog.get(0).addEventListener&&dialog.get(0).addEventListener("animationend",function(){
+                                dialog.removeClass("antZoomIn");
+                            },false);
+                        });
+                        $(document).delegate("#project_change .btn_close","click",function(e){
+                            e.stopPropagation();
+                            e.preventDefault();
+                            dialog.addClass("antZoomOut");
+                            dialog.get(0).addEventListener&&dialog.get(0).addEventListener("animationend",function(){
+                                dialog.removeClass("antZoomOut");
+                                $("#project_change").remove();
+                            },false);
+                            setTimeout(function(){
+                                $("#project_change").remove();
+                            },300);
+                        });
+                        $(document).delegate("#project_change .dadao_modal_mask","click",function(e){
+                            e.stopPropagation();
+                            e.preventDefault();
+                            dialog.addClass("antZoomOut");
+                            dialog.get(0).addEventListener&&dialog.get(0).addEventListener("animationend",function(){
+                                dialog.removeClass("antZoomOut");
+                                $("#project_change").remove();
+                            },false);
+                            setTimeout(function(){
+                                $("#project_change").remove();
+                            },300);
+                        });
+                }
                 table_slide();
+                //项目终止
                 project_pause();
+                //项目变更
+                project_change();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
             });

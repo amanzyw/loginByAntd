@@ -168,13 +168,13 @@
                                                             <div class="iblock form_header_item">
                                                                 <div class="iblock form_header_text">项目名称：</div>
                                                                 <div class="iblock form_input_box form_input_box_lg">
-                                                                    <input class="dadao_input dadao_input_lg" type="text"/>
+                                                                    <input class="dadao_input dadao_input_lg" type="text" placeholder="请选择项目名称"/>
                                                                 </div>
                                                             </div>
                                                             <div class="iblock form_header_item">
                                                                 <div class="iblock form_header_text">业主名称：</div>
                                                                 <div class="iblock form_input_box">
-                                                                    <input class="dadao_input dadao_input_lg" type="text"/>
+                                                                    <input class="dadao_input dadao_input_lg" type="text" placeholder="请填写业主名称"/>
                                                                 </div>
                                                             </div>
                                                             <div class="iblock form_header_item">
@@ -202,7 +202,11 @@
                                                     </form>
                                                 </div>
                                                 <div class="query_box_tabele">
-                                                    <table class="ui_table dadao_table">
+                                                    <div class="empty">
+                                                        <div class="dadao_empty"></div>
+                                                        <div class="empty_text">暂时没有待处理的事项</div>
+                                                    </div>
+                                                    <table class="ui_table dadao_table table_default table_striped table_hover table_bordered">
                                                         <thead>
                                                             <tr>
                                                                 <th>序号</th>
@@ -218,14 +222,6 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                                <td colspan="10">
-                                                                    <div class="empty">
-                                                                        <div class="dadao_empty"></div>
-                                                                        <div class="empty_text">暂时没有待处理的事项</div>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
                                                             <tr>
                                                                 <td>1</td>
                                                                 <td>
@@ -348,6 +344,18 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
+                                                </div>
+                                                <div class="desk_pager_outer">
+                                                    <div class="tcdPageCode">
+                                                        <button class="dadao_btn" disabled="">上一页</button>
+                                                        <button class="dadao_btn">1</button>
+                                                        <button class="dadao_btn" href="javascript:;">2</button>
+                                                        <button class="dadao_btn" href="javascript:;">3</button>
+                                                        <button class="dadao_btn" href="javascript:;">4</button>
+                                                        <span>...</span>
+                                                        <button class="dadao_btn" href="javascript:;">22</button>
+                                                        <button class="dadao_btn" href="javascript:;">下一页</button>
+                                                    </div>
                                                 </div>
                                                 <div class="load_more">
                                                     <button class="dadao_btn">加载更多</button>
