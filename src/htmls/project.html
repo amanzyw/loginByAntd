@@ -55,7 +55,7 @@
                                         </a>
                                     </li>
                                     <li class="menu_item active">
-                                        <a class="menu_link" data-tooltip="项目" data-arrow-direction="right" href="./project.html" target="_self">
+                                        <a class="menu_link" data-tooltip="我发起的" data-arrow-direction="right" href="./project.html" target="_self">
                                             <span class="DaDao DaDao-xiangmu"></span>
                                         </a>
                                     </li>
@@ -126,41 +126,31 @@
                         <div class="view_main_body">
                             <div class="body_inner default_width">
                                 <div class="project_content">
-                                    <div class="project_title">项目信息</div>
+                                    <div class="project_title">我发起的</div>
                                     <div class="project_query form">
                                         <form class="my_form" action="#" method="post">
                                             <div class="from_header">
                                                 <div class="iblock form_header_item">
-                                                    <div class="iblock form_header_text">项目名称：</div>
-                                                    <div class="iblock form_input_box form_input_box_lg">
-                                                        <input class="dadao_input dadao_input_lg" type="text" placeholder="请选择项目名称"/>
-                                                    </div>
-                                                </div>
-                                                <div class="iblock form_header_item">
-                                                    <div class="iblock form_header_text">业主名称：</div>
-                                                    <div class="iblock form_input_box">
-                                                        <input class="dadao_input dadao_input_lg" type="text" placeholder="请填写业主名称"/>
-                                                    </div>
-                                                </div>
-                                                <div class="iblock form_header_item">
-                                                    <div class="iblock form_header_text">项目状态：</div>
+                                                    <div class="iblock form_header_text">应用类型：</div>
                                                     <div class="iblock form_select_box">
-                                                        <select class="dadao_select">
+                                                        <select class="dadao_select dadao_select_info">
                                                             <option value="0">请选择</option>
-                                                            <option value="1">全部</option>
-                                                            <option value="2">请假请假</option>
-                                                            <option value="3">报销报销报销</option>
-                                                            <option value="4">外出外出外出外出</option>
-                                                            <option value="5">出差出差出差出差</option>
+                                                            <option value="1">应用类型1</option>
+                                                            <option value="2">应用类型2</option>
+                                                            <option value="3">应用类型3</option>
+                                                            <option value="4">应用类型4</option>
+                                                            <option value="5">应用类型5</option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="iblock form_header_item">
-                                                    <div class="iblock form_btn">
-                                                        <button class="dadao_btn dadao_btn_primary">查&nbsp;&nbsp;询</button>
+                                                    <div class="iblock form_input_box form_input_box_lg">
+                                                        <input class="dadao_input dadao_input_lg dadao_input_info" type="text" placeholder="请输入关键词经行搜索"/>
                                                     </div>
+                                                </div>
+                                                <div class="iblock form_header_item">
                                                     <div class="iblock form_btn">
-                                                        <button class="dadao_btn">清&nbsp;&nbsp;空</button>
+                                                        <button class="dadao_btn dadao_btn_info">搜&nbsp;&nbsp;索</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -176,13 +166,8 @@
                                                 <tr>
                                                     <th>序号</th>
                                                     <th>项目名称</th>
-                                                    <th>项目编号</th>
-                                                    <th>业务名称</th>
-                                                    <th>经营负责人</th>
-                                                    <th>项目负责人</th>
-                                                    <th>项目状态</th>
-                                                    <th>支出</th>
-                                                    <th>收入</th>
+                                                    <th>应用类型</th>
+                                                    <th>发起时间</th>
                                                     <th>操作</th>
                                                 </tr>
                                             </thead>
@@ -195,25 +180,14 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <span class="iblock project_num">0212141274</span>
+                                                        <span class="iblock project_beian">备案登记</span>
                                                     </td>
                                                     <td>
-                                                        <span class="iblock project_pname">xxxxxx</span>
+                                                        <span class="iblock project_create_time">2017/01/02</span>
                                                     </td>
-                                                    <td>
-                                                        <span class="iblock project_mana_respon">xxxxx</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="iblock project_respon">xxxxxx</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="iblock project_status">生产已完结</span>
-                                                    </td>
-                                                    <td>5698</td>
-                                                    <td>1266</td>
                                                     <td>
                                                         <span class="iblock coporation">
-                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn">详细</button>
+                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn dadao_btn_hover_info">详细</button>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -225,25 +199,14 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <span class="iblock project_num">0212141274</span>
+                                                        <span class="iblock project_beian">备案登记</span>
                                                     </td>
                                                     <td>
-                                                        <span class="iblock project_pname">xxxxxx</span>
+                                                        <span class="iblock project_create_time">2017/01/02</span>
                                                     </td>
-                                                    <td>
-                                                        <span class="iblock project_mana_respon">xxxxx</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="iblock project_respon">xxxxxx</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="iblock project_status">生产已完结</span>
-                                                    </td>
-                                                    <td>5698</td>
-                                                    <td>1266</td>
                                                     <td>
                                                         <span class="iblock coporation">
-                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn">详细</button>
+                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn dadao_btn_hover_info">详细</button>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -255,25 +218,14 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <span class="iblock project_num">0212141274</span>
+                                                        <span class="iblock project_beian">备案登记</span>
                                                     </td>
                                                     <td>
-                                                        <span class="iblock project_pname">xxxxxx</span>
+                                                        <span class="iblock project_create_time">2017/01/02</span>
                                                     </td>
-                                                    <td>
-                                                        <span class="iblock project_mana_respon">xxxxx</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="iblock project_respon">xxxxxx</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="iblock project_status">生产已完结</span>
-                                                    </td>
-                                                    <td>5698</td>
-                                                    <td>1266</td>
                                                     <td>
                                                         <span class="iblock coporation">
-                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn">详细</button>
+                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn dadao_btn_hover_info">详细</button>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -285,25 +237,33 @@
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <span class="iblock project_num">0212141274</span>
+                                                        <span class="iblock project_beian">备案登记</span>
                                                     </td>
                                                     <td>
-                                                        <span class="iblock project_pname">xxxxxx</span>
+                                                        <span class="iblock project_create_time">2017/01/02</span>
                                                     </td>
-                                                    <td>
-                                                        <span class="iblock project_mana_respon">xxxxx</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="iblock project_respon">xxxxxx</span>
-                                                    </td>
-                                                    <td>
-                                                        <span class="iblock project_status">生产已完结</span>
-                                                    </td>
-                                                    <td>5698</td>
-                                                    <td>1266</td>
                                                     <td>
                                                         <span class="iblock coporation">
-                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn">详细</button>
+                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn dadao_btn_hover_info">详细</button>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>
+                                                        <div class="iblock project_name">
+                                                            <a href="./project_detail.html" class="a_link" target="_self" title="***滨江路二期工程优化">***滨江路二期工程优化</a>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="iblock project_beian">备案登记</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="iblock project_create_time">2017/01/02</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="iblock coporation">
+                                                            <button onclick="window.location.href='./project_detail.html'" class="dadao_btn dadao_btn_hover_info">详细</button>
                                                         </span>
                                                     </td>
                                                 </tr>

@@ -20,6 +20,56 @@
                 common.tooltip();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
+                var getUserData=function(){
+                    var userLoginInfo=common.storageFunc.get("userLoginInfo");
+                    /*$.ajax({
+                        type:"GET",
+                        url:"http://192.168.0.85:8182/v1/apps/add",
+                        dataType:"json",
+                        crossDomain:true,
+                        headers:{
+                            "Authorization":"Bearer ZWVfeFsK1yw9UpVrNGWzM3S3C9isN0enazJl7LjZXzE1MDYxMzE4MTc="
+                        },
+                        success:function(data){
+                            var regexp=/href=\"([\w\.\/])+\"/img;
+                            $("body").append("<div id='zyw' style='position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background-color:#f2f2ed;'></div>");
+                            $("#zyw").append(data);
+                            console.log(data);
+                        },
+                        error:function(){
+                            console.log("error",arguments);
+                        }
+                    });
+                    return;*/
+                    if(userLoginInfo==undefined){
+                        return;
+                    }
+                    userLoginInfo=JSON.parse(userLoginInfo);
+                    var token={
+                        Authorization:"Bearer "+userLoginInfo["token"]
+                    }
+                    $.ajax({
+                        type:"GET",
+                        url:"http://ee-api-test.baijiakeji.cn/v1/employees/info",
+                        dataType:"json",
+                        headers:token,
+                        data:{
+                            id:userLoginInfo["user"]["id"]
+                        },
+                        success:function(data){
+                            common.storageFunc.set("userInfoMation",JSON.stringify(data));
+                            console.log(111,data,typeof pageInit);
+                            pageInit&&pageInit(data);
+                        },
+                        error:function(){
+                            console.log("error");
+                        }
+                    })
+                }
+                //页面初始化数据
+                var pageInit=function(data){
+                    console.log(data);
+                }
                 //编辑用户名
                 var setUname=function(){
                     var uNameBoxInner=null;
@@ -56,6 +106,8 @@
                         var html='',
                             name=$.trim(box.find(".myName").text()),
                             position=$.trim(box.find(".myPosition").text()),
+                            age=$.trim(box.find(".myAge").text()),
+                            gender=$.trim(box.find(".myGender").text()),
                             department=$.trim(box.find(".myDepartment").text()),
                             sign=$.trim(box.find(".mySign").text());
                             name=name=="未填写"?"":name;
@@ -64,6 +116,17 @@
                             sign=sign=="未填写"?"":sign;
                         html+='<div class="me_info_control" style="margin-bottom:15px;">';
                         html+=    '<input class="getUname dadao_input dadao_input_lg" type="text" placeholder="姓名" value="'+name+'"/>';
+                        html+='</div>';
+                        html+='<div class="me_info_control" style="margin-bottom:15px;">';
+                        html+=    '<input class="getUname dadao_input dadao_input_lg" type="text" placeholder="年龄" value="'+age+'"/>';
+                        html+='</div>';
+                        html+='<div id="gender" class="me_info_control" style="margin-bottom:15px;position:relative;">';
+                        html+=    '<input class="getUname dadao_input dadao_input_lg" type="text" placeholder="性别" value="'+gender+'"/>';
+                        html+=    '<ul class="dropdown_panel" style="width:100%;display:none;">';
+                        html+=         '<li><a href="#">女</a></li>';
+                        html+=         '<li><a href="#">男</a></li>';
+                        html+=         '<li><a href="#">保密</a></li>';
+                        html+=    '</ul>';
                         html+='</div>';
                         html+='<div class="me_info_control" style="margin-bottom:15px;">';
                         html+=    '<input class="getPo dadao_input dadao_input_lg" type="text" placeholder="职位" value="'+position+'"/>';
@@ -108,12 +171,28 @@
                         box.find(".getCancel").on("click",function(){
                             box.html(infoBoxInnerHTML);
                         });
+                        $("#gender").find("input").on("click",function(e){
+                            e.stopPropagation();
+                            e.preventDefault();
+                            $("#gender").find(".dropdown_panel").show();
+                        });
+                        $("#gender").find("li").on("click",function(e){
+                            e.stopPropagation();
+                            e.preventDefault();
+                            var text=$.trim($(this).text());
+                            $("#gender").find("input").val(text);
+                            $("#gender").find(".dropdown_panel").hide();
+                        });
+                        $(document).on("click",function(){
+                            $("#gender").find(".dropdown_panel").hide();
+                        });
                     });
                 }
                 //设置用户名
                 setUname();
                 //编辑资料
                 setPersonalInfo();
+                getUserData();
             });
         </script>
     </head>
@@ -152,7 +231,7 @@
                                         </a>
                                     </li>
                                     <li class="menu_item">
-                                        <a class="menu_link" data-tooltip="项目" data-arrow-direction="right" href="./project.html" target="_self">
+                                        <a class="menu_link" data-tooltip="我发起的" data-arrow-direction="right" href="./project.html" target="_self">
                                             <span class="DaDao DaDao-xiangmu"></span>
                                         </a>
                                     </li>
@@ -265,9 +344,9 @@
                                                                 设置头像
                                                             </label>
                                                         </div>
-                                                        <div class="setting_btn iblock">
+                                                        <!-- <div class="setting_btn iblock">
                                                             <button class="dadao_btn dadao_btn_lg">移除头像</button>
-                                                        </div>
+                                                        </div> -->
                                                         <div class="fileUpLoaderPanel">
                                                             <div class="cropper-wraper webuploader-element-invisible">
                                                                 <div class="img-container">
@@ -314,6 +393,14 @@
                                                         <div class="me_info_control">
                                                             <div class="control_label iblock">姓名：</div>
                                                             <div class="control_input iblock myName">朱新东</div>
+                                                        </div>
+                                                        <div class="me_info_control">
+                                                            <div class="control_label iblock">年龄：</div>
+                                                            <div class="control_input iblock myAge">26</div>
+                                                        </div>
+                                                        <div class="me_info_control">
+                                                            <div class="control_label iblock">性别：</div>
+                                                            <div class="control_input iblock myGender">男</div>
                                                         </div>
                                                         <div class="me_info_control">
                                                             <div class="control_label iblock">职位：</div>

@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 11:48:37
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-06 17:45:11
+* @Last Modified time: 2017-09-23 14:46:55
 */
 
 'use strict';
@@ -37,7 +37,7 @@ var common={
                     left:left+width,
                     top:top+halftop
                 });
-                tooltip.addClass("antZoomIn");
+                /*tooltip.addClass("antZoomIn");*/
             }
             if(direction=="bottom"){
                 dom.find(".dadao_tooltip").css({
@@ -47,9 +47,9 @@ var common={
             }
 
             $("body").append(dom);
-            tooltip.get(0).addEventListener("animationend",function(){
+            /*tooltip.get(0).addEventListener("animationend",function(){
                 tooltip.removeClass("antZoomIn");
-            },false);
+            },false);*/
             CreateDOM.push({
                 id:randomNum,
                 dom:dom
@@ -65,13 +65,14 @@ var common={
             $.each(CreateDOM,function(idx,item){
                 if(id==item["id"]){
                     domEle=item.dom;
-                    setTimeout(function(){
+                    /*setTimeout(function(){
                         domEle.remove();
                     },300);
                     domEle.find(".dadao_tooltip").addClass("antZoomOut");
                     domEle.get(0).addEventListener("animationend",function(){
                         domEle.remove();
-                    },false);
+                    },false);*/
+                    domEle.remove();
                     tamp=DOM.indexOf(id);
                     DOM.splice(tamp,1);
                 }
@@ -133,5 +134,23 @@ var common={
                 opt&&opt.on&&opt.on($(this));
             }
         });
-    }
+    },
+    storageFunc:(function(){
+        var storage=window.localStorage;
+        var result={
+            get:function(item){
+                return storage.getItem(item);
+            },
+            set:function(item,value){
+                storage.setItem(item,value);
+            },
+            remove:function(item){
+                storage.removeItem(item);
+            },
+            removeAll:function(){
+                storage.clear();
+            }
+        }
+        return result;
+    })()
 }
