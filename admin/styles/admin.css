@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-31 14:11:49
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-19 14:28:51
+* @Last Modified time: 2017-10-07 14:51:10
 */
 .login_header{
     height:70px;
@@ -362,6 +362,9 @@
 }
 .mechan_view_box,.display_box,.menber_view_box{
     height:100%;
+}
+.menber_view_box{
+    height:auto;
 }
 .ui_group{
     padding:22px;

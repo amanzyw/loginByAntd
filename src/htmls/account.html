@@ -4,73 +4,18 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <script type="text/javascript" src="../scripts/jquery1.9.1.min.js"></script>
-        <script type="text/javascript" src="../scripts/echarts.simple.min.js"></script>
-        <script type="text/javascript" src="../scripts/main.js"></script>
-        <script type="text/javascript" src="../scripts/old.main.js"></script>
+        <link rel="stylesheet" href="../styles/antd.css" />
         <link rel="stylesheet" href="../styles/cssrest.css" />
         <link rel="stylesheet" href="../styles/app.css" />
         <link rel="stylesheet" href="http://at.alicdn.com/t/font_392605_w094gou4uzddkj4i.css" />
+        <script type="text/javascript" src="../scripts/jquery1.9.1.min.js"></script>
+        <script type="text/javascript" src="../scripts/main.js"></script>
         <script>
             $(document).ready(function(){
                 //开启tooltip提示
                 common.tooltip();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
-                //修改密码
-                $(document).on("click","#ichange",function(){
-                    var box=$("#psdChangeBox"),
-                        userLoginInfo=common.storageFunc.get("userLoginInfo"),
-                        inputs=$("#psdChangeBox").find("input"),
-                        psd=inputs.eq(0).val(),
-                        newPSD1=inputs.eq(1).val(),
-                        newPSD2=inputs.eq(2).val();
-                        if(userLoginInfo==undefined){
-                            let islogin=confirm("您还没有登录，去登录？");
-                            if(islogin){
-                                window.location.href="http://192.168.0.145:8000";
-                            }
-                            return;
-                        }
-                        if(psd==""||newPSD1==""||newPSD2==""){
-                            alert("密码或者新密码不能为空!");
-                            return;
-                        }
-                        if(newPSD1!=newPSD2){
-                            alert("新密码要一致！");
-                            return;
-                        }
-                        userLoginInfo=JSON.parse(userLoginInfo);
-
-                        var token={
-                            Authorization:"Bearer "+userLoginInfo["token"]
-                        }
-                        var changePSD=function(){
-                            var dtd=$.Deferred();
-                            $.ajax({
-                                url:"http://ee-api-test.baijiakeji.cn/v1/employees/resetpwd",
-                                type:"post",
-                                dataType:"json",
-                                async:true,
-                                headers:token,
-                                data:{
-                                    password:psd
-                                },
-                                success:function(data){
-                                    dtd.resolve(data);
-                                },
-                                error:function(){
-                                    dtd.reject(arguments);
-                                }
-                            });
-                            return dtd;
-                        }
-                        $.when(changePSD()).done(function(data){
-                            console.log(1111,data);
-                        }).fail(function(errorInfo){
-                            console.log(2222,errorInfo);
-                        });
-                });
             });
         </script>
     </head>
@@ -181,69 +126,7 @@
                             <div class="body_inner default_width">
                                 <!-- 个人设置start -->
                                 <div class="personal_setting_view setting_view_box">
-                                    <div class="personal_setting_tab">
-                                        <div class="tab_icon">
-                                            <span class="DaDao DaDao-gerenshezhi"></span>
-                                            账户设置
-                                        </div>
-                                        <div class="center_labels">
-                                            <ul class="iblock clearfix tabob">
-                                                <li class="ST_item">
-                                                    <a class="alink iblock" href="personal_setting.html" target="_self" title="账户资料">账户资料</a>
-                                                </li>
-                                                <li class="ST_item active">
-                                                    <a class="alink iblock" href="reset_psd.html" target="_self" title="修改密码">修改密码</a>
-                                                </li>
-                                                <li class="ST_item">
-                                                    <a class="alink iblock" href="account_bind.html" target="_self" title="账户绑定">帐号绑定</a>
-                                                </li>
-                                                <li class="ST_item">
-                                                    <a class="alink iblock" href="message_tips.html" target="_self" title="消息提醒">消息提醒</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="setting_inner">
-                                        <div class="setting_me_list">
-                                            <!-- 修改密码start -->
-                                            <div class="account_item account_li">
-                                                <div class="cell_title">修改密码</div>
-                                                <div class="account_setting_box clearfix">
-                                                    <div class="fl account_label">
-                                                        密码最好由下划线（_）、数字、字母构成。
-                                                    </div>
-                                                    <div id="psdChangeBox" class="fl setting_cell">
-                                                        <div class="uname">
-                                                            <div class="iblock key">原密码：</div>
-                                                            <div class="iblock value input_width">
-                                                                <input class="dadao_input dadao_input_lg" type="password" placeholder="原密码"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="uname">
-                                                            <div class="iblock key">新密码：</div>
-                                                            <div class="iblock value input_width">
-                                                                <input class="dadao_input dadao_input_lg" type="password" placeholder="新密码"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="uname">
-                                                            <div class="iblock key">确认新密码：</div>
-                                                            <div class="iblock value input_width">
-                                                                <input class="dadao_input dadao_input_lg" type="password" placeholder="确认新密码"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="uname">
-                                                            <div class="iblock key">&nbsp;</div>
-                                                            <div class="iblock value">
-                                                                <button id="ichange" class="dadao_btn dadao_btn_lg">确认修改</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- 修改密码end -->
-
-                                        </div>
-                                    </div>
+                                    <div id="root"></div>
                                 </div>
                                 <!-- 个人设置end -->
                             </div>
@@ -253,5 +136,6 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="../../account.bundle.js"></script>
     </body>
 </html>

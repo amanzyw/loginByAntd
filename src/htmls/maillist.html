@@ -17,7 +17,7 @@
                 //树形结构交互
                 var tree_node=function(){
                     var tree=$("#tree_node");
-                    var caret=tree.find(".ant-select-tree-switcher_open");
+                    var caret=tree.find(".ant-select-tree-switcher").not(".ant-select-tree-switcher-noop");
                     var node=tree.find(".ant-select-tree-node-content-wrapper");
                     caret.on("click",function(){
                         var isopen=$(this).is(".ant-select-tree-switcher_open");
@@ -120,16 +120,16 @@
                                         <div style="display:none;" class="ui_user_panel">
                                             <ul class="ui_user_list">
                                                 <li class="panel_item">
-                                                    <a href="personal_setting.html" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
+                                                    <a href="account.html?tab=1" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
                                                 </li>
                                                 <li class="panel_item">
-                                                    <a href="reset_psd.html" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
+                                                    <a href="account.html?tab=2" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
                                                 </li>
                                                 <li class="panel_item">
-                                                    <a href="account_bind.html" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
+                                                    <a href="account.html?tab=3" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
                                                 </li>
                                                 <li class="panel_item bd_none">
-                                                    <a href="message_tips.html" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
+                                                    <a href="account.html?tab=4" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
                                                 </li>
                                                 <li class="line"></li>
                                                 <li class="panel_item quot">
@@ -169,7 +169,7 @@
                                                                     <ul class="ant-select-tree-child-tree ant-select-tree-child-tree-open" data-expanded="true">
                                                                         <li class="">
                                                                             <span class="ant-select-tree-switcher ant-select-tree-switcher-noop"></span>
-                                                                            <span title="my leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                            <span class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal ant-tree-selected">
                                                                                 <span class="ant-select-tree-title">西安分院</span>
                                                                             </span>
                                                                         </li>
@@ -197,11 +197,11 @@
                                                                     </ul>
                                                                 </li>
                                                                 <li class="">
-                                                                    <span class="ant-select-tree-switcher ant-select-tree-switcher_open"></span>
+                                                                    <span class="ant-select-tree-switcher ant-select-tree-switcher_close"></span>
                                                                     <span title="parent 1-1" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-open">
                                                                         <span class="ant-select-tree-title">经营部</span>
                                                                     </span>
-                                                                    <ul class="ant-select-tree-child-tree ant-select-tree-child-tree-open" data-expanded="true">
+                                                                    <ul class="ant-select-tree-child-tree" data-expanded="true">
                                                                         <li class="">
                                                                             <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
                                                                             </span>
@@ -246,6 +246,20 @@
                                                                         </li>
                                                                     </ul>
                                                                 </li>
+                                                                <li class="">
+                                                                    <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                    </span>
+                                                                    <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                        <span class="ant-select-tree-title">管理部</span>
+                                                                    </span>
+                                                                </li>
+                                                                <li class="">
+                                                                    <span class="ant-select-tree-switcher ant-select-tree-switcher-noop">
+                                                                    </span>
+                                                                    <span title="your leaf" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-normal">
+                                                                        <span class="ant-select-tree-title">科技部</span>
+                                                                    </span>
+                                                                </li>
                                                             </ul>
                                                         </li>
                                                     </ul>
@@ -270,7 +284,7 @@
                                                             <div class="dadao_empty"></div>
                                                             <div class="empty_text">暂时没有待处理的事项</div>
                                                         </div>
-                                                        <table class="ui_table dadao_table table_default table_striped table_hover table_bordered">
+                                                        <table class="ui_table dadao_table table_default table_striped table_hover">
                                                             <thead>
                                                                 <tr>
                                                                     <th>姓名</th>

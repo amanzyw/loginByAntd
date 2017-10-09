@@ -42,6 +42,10 @@
                     });
                     return;*/
                     if(userLoginInfo==undefined){
+                        let islogin=confirm("您还没有登录，去登录？");
+                        if(islogin){
+                            window.location.href="http://192.168.0.145:8000";
+                        }
                         return;
                     }
                     userLoginInfo=JSON.parse(userLoginInfo);
@@ -58,7 +62,6 @@
                         },
                         success:function(data){
                             common.storageFunc.set("userInfoMation",JSON.stringify(data));
-                            console.log(111,data,typeof pageInit);
                             pageInit&&pageInit(data);
                         },
                         error:function(){
@@ -66,9 +69,59 @@
                         }
                     })
                 }
+                var trSexNumToText=function(numOrText,reverse){
+                    let result=null;
+                    if(reverse==true){
+                        switch(numOrText){
+                            case "保密":
+                                result="0";
+                                break;
+                            case "男":
+                                result="1";
+                                break;
+                            case "女":
+                                result="2";
+                                break;
+                            default:
+                                throw new Error("性别只能是：男、女、保密中的一种");
+                        }
+                    }else{
+                        numOrText=numOrText-0;
+                        if(typeof numOrText!=="number"&&numOrText!==numOrText){
+                            throw new Error("参数不是一个数字");
+                            return;
+                        }
+                        switch(numOrText){
+                            case 0:
+                                result="保密";
+                                break;
+                            case 1:
+                                result="男";
+                                break;
+                            case 2:
+                                result="女";
+                                break;
+                            default:
+                                throw new Error("不知是男是女");
+                        }
+                    }
+
+                    return result;
+                }
+                var pageState=new Object();
                 //页面初始化数据
                 var pageInit=function(data){
-                    console.log(data);
+                    pageState["nickname"]=data["nickname"];
+                    pageState["full_name"]=data["full_name"];
+                    pageState["age"]=data["age"];
+                    pageState["sex"]=data["sex"];
+                    pageState["position"]=data["position"];
+
+                    $("#changeUNameBox").find(".value").text(pageState["nickname"]);
+                    $("#infoBox").find(".myName").text(pageState["full_name"]);
+                    $("#infoBox").find(".myAge").text(pageState["age"]);
+                    $("#infoBox").find(".myGender").text(trSexNumToText(pageState["sex"]));
+                    $("#infoBox").find(".myPosition").text(pageState["position"]==undefined?"未填写":pageState["position"]);
                 }
                 //编辑用户名
                 var setUname=function(){
@@ -91,6 +144,7 @@
                             uNameValue=value;
                             box.html(uNameBoxInner);
                             box.find(".value").text(uNameValue);
+                            pageState["nickname"]=uNameValue;
                         });
                         box.find(".getCancel").on("click",function(){
                             box.html(uNameBoxInner);
@@ -104,24 +158,23 @@
                         var box=$("#infoBox");
                         infoBoxInnerHTML=box.html();
                         var html='',
-                            name=$.trim(box.find(".myName").text()),
-                            position=$.trim(box.find(".myPosition").text()),
-                            age=$.trim(box.find(".myAge").text()),
-                            gender=$.trim(box.find(".myGender").text()),
+                            name=pageState["nickname"],
+                            position=pageState["position"],
+                            age=pageState["age"],
+                            gender=trSexNumToText(pageState["sex"]),
                             department=$.trim(box.find(".myDepartment").text()),
                             sign=$.trim(box.find(".mySign").text());
-                            name=name=="未填写"?"":name;
-                            position=position=="未填写"?"":position;
-                            department=department=="未填写"?"":department;
-                            sign=sign=="未填写"?"":sign;
+                            position=position==undefined?"":position;
+                            department=department==undefined?"":department;
+                            sign=sign==undefined?"":sign;
                         html+='<div class="me_info_control" style="margin-bottom:15px;">';
                         html+=    '<input class="getUname dadao_input dadao_input_lg" type="text" placeholder="姓名" value="'+name+'"/>';
                         html+='</div>';
                         html+='<div class="me_info_control" style="margin-bottom:15px;">';
-                        html+=    '<input class="getUname dadao_input dadao_input_lg" type="text" placeholder="年龄" value="'+age+'"/>';
+                        html+=    '<input class="getUage dadao_input dadao_input_lg" type="text" placeholder="年龄" value="'+age+'"/>';
                         html+='</div>';
                         html+='<div id="gender" class="me_info_control" style="margin-bottom:15px;position:relative;">';
-                        html+=    '<input class="getUname dadao_input dadao_input_lg" type="text" placeholder="性别" value="'+gender+'"/>';
+                        html+=    '<input readonly class="getUgender dadao_input dadao_input_lg" type="text" placeholder="性别" value="'+gender+'"/>';
                         html+=    '<ul class="dropdown_panel" style="width:100%;display:none;">';
                         html+=         '<li><a href="#">女</a></li>';
                         html+=         '<li><a href="#">男</a></li>';
@@ -143,6 +196,8 @@
                         box.html(html);
                         box.find(".getSure").on("click",function(){
                             var namevalue=$.trim(box.find(".getUname").val()),
+                                age=$.trim(box.find(".getUage").val()),
+                                gender=$.trim(box.find(".getUgender").val()),
                                 povalue=$.trim(box.find(".getPo").val()),
                                 departValue=$.trim(box.find(".getDepart").val()),
                                 signValue=$.trim(box.find(".getSign").val());
@@ -164,9 +219,21 @@
                             }
                             box.html(infoBoxInnerHTML);
                             box.find(".myName").text(namevalue);
+                            box.find(".myAge").text(age);
+                            box.find(".myGender").text(gender);
                             box.find(".myPosition").text(povalue==""||povalue==undefined?"未填写":povalue);
                             box.find(".myDepartment").text(departValue==""||departValue==undefined?"未填写":departValue);
                             box.find(".mySign").text(signValue==""||signValue==undefined?"未填写":signValue);
+
+
+                            pageState["full_name"]=namevalue;
+                            pageState["age"]=age;
+                            pageState["sex"]=trSexNumToText(gender,true);
+                            pageState["position"]=povalue;
+
+                            console.log(pageState);
+
+
                         });
                         box.find(".getCancel").on("click",function(){
                             box.html(infoBoxInnerHTML);

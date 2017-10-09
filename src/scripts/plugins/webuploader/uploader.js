@@ -881,6 +881,7 @@ $(document).ready(function(){
 
                         if ( error ) {
                             alert('不能预览');
+                            $("#cancel").trigger("click");
                             return;
                         }
 
@@ -958,6 +959,7 @@ $(document).ready(function(){
                         cb( response.result );
                     } else {
                         alert("预览出错");
+                        $("#cancel").trigger("click");
                     }
                 });
             }
