@@ -17,36 +17,6 @@
                 common.tooltip();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
-                //flex-box自动布局，自适应
-                var flexBoxFun=function(){
-                    var flexBox=$("#flex-box"),
-                        flexView=$("#flex-body"),
-                        liArrs=flexView.find("li"),
-                        defaultLiWidth=liArrs.eq(0).outerWidth(),
-                        offsetBoxPadding=defaultLiWidth-liArrs.eq(0).width();
-
-                    var flexBoxWidthAuto=function(){
-                        var liWidth=defaultLiWidth,
-                            boxWidth=flexBox.width(),
-                            intLiNum=parseInt((boxWidth+45)/(liWidth+45));
-                            console.log(intLiNum);
-                        var caculateWidth=parseInt((boxWidth+45)/intLiNum)-45;
-                            flexView.css({
-                                marginRight:-45
-                            });
-                            liArrs.each(function(idx,item){
-                                liArrs.eq(idx).css({
-                                    marginRight:45,
-                                    width:caculateWidth-offsetBoxPadding
-                                });
-                            })
-
-
-                    }
-                    flexBoxWidthAuto();
-                    $(window).on("resize",flexBoxWidthAuto);
-                }
-                flexBoxFun();
             });
         </script>
     </head>
@@ -337,6 +307,7 @@
                                                                     </tr>
                                                                 </tbody>
                                                             </table>
+                                                            <div class="task_info">任务信息：</div>
                                                             <!--空start-->
                                                             <div class="flex_empty">
                                                                 <div class="ui_empty">
