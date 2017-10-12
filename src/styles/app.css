@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 09:10:09
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-10-10 11:38:53
+* @Last Modified time: 2017-10-11 14:22:23
 */
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0)
@@ -853,7 +853,7 @@
     outline: none;
     display: block;
     width: 100%;
-    height: 34px;
+    height: 32px;
     padding: 6px 12px;
     font-size: 14px;
     line-height: 1.42857143;
@@ -964,7 +964,7 @@
 
 }
 .ui_tab .tab_header{
-    margin-bottom: 16px;
+    margin-bottom: 30px;
 }
 .ui_tab .tab_content{
 
@@ -974,6 +974,28 @@
 }
 .tab_cnt_item.active{
     display:block;
+}
+.message_unread.table_padding_box{
+    padding-top:60px;
+}
+.message_unread .classify{
+    position:absolute;
+    top: 15px;
+    left: 15px;
+    right:15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ddd;
+}
+.message_unread .classify .legend{
+    font-size: 12px;
+    font-weight: 700;
+    color: #959595;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.message_unread .classify .dadao_select{
+    height: 26px;
+    padding: 0 40px;
 }
 .tab_top_box{
     position:relative;
@@ -1297,8 +1319,8 @@
     -ms-transition:all 0.3s ease-in-out;
 }
 .app_content .app_cell:hover{
-    border-color:#f8f8f8;
-    background-color:#f8f8f8;
+    border-color:transparent;
+    background-color:#fafafa;
     transition:all 0.3s ease-in-out;
     -webkit-transition:all 0.3s ease-in-out;
     -moz-transition:all 0.3s ease-in-out;
@@ -1319,6 +1341,7 @@
     line-height:24px;
     margin-top:6px;
     font-size:14px;
+    color:#777;
 }
 .management .app_cell .app_img.img_de1{
     background:url(../images/body/application_management_item_bg_1.png) no-repeat center center;
@@ -1385,7 +1408,7 @@
 /*消息内容样式start*/
 
 .message_box{
-    padding: 15px 45px 22px 26px;
+    padding: 15px 26px 22px 26px;
     height: 100%;
     box-sizing: border-box;
     overflow-x: hidden;
@@ -1494,6 +1517,26 @@
 .project_tabele{
     margin-top:12px;
 }
+.table_padding_box{
+    padding: 45px 15px 15px;
+    border: 1px solid #ddd;
+    position: relative;
+}
+.table_legend{
+    display:none;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #959595;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.table_padding_box .table_legend{
+    display:block;
+}
+
 .dadao_table{
     border-collapse:collapse;
     border-spacing:0;
@@ -2730,12 +2773,25 @@
     height: 28px;
 }
 .co_filter_table{
-    padding:0 12px;
+    margin-top: 30px;
+    padding: 45px 15px 15px;
+    border: 1px solid #ddd;
+    position: relative;
+}
+.co_filter_table .project_info{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #959595;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 .co_filter_table thead th{
-    background-color: #f5f5f5!important;
+    /* background-color: #f5f5f5!important;
     border: 1px solid #ddd!important;
-    border-bottom-width: 2px!important;
+    border-bottom-width: 2px!important; */
 }
 /*
     生产协作end

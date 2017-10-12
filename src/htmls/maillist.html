@@ -120,16 +120,16 @@
                                         <div style="display:none;" class="ui_user_panel">
                                             <ul class="ui_user_list">
                                                 <li class="panel_item">
-                                                    <a href="account.html?tab=1" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',1)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
                                                 </li>
                                                 <li class="panel_item">
-                                                    <a href="account.html?tab=2" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',2)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
                                                 </li>
                                                 <li class="panel_item">
-                                                    <a href="account.html?tab=3" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',3)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
                                                 </li>
                                                 <li class="panel_item bd_none">
-                                                    <a href="account.html?tab=4" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',4)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
                                                 </li>
                                                 <li class="line"></li>
                                                 <li class="panel_item quot">
@@ -279,7 +279,7 @@
                                                     <span class="route_item active">西安分院</span>
                                                 </div>
                                                 <div class="group_table">
-                                                    <div class="desk_table table maillist_table">
+                                                    <div class="desk_table table maillist_table table_padding_box">
                                                         <table class="ui_table dadao_table table_default table_striped table_hover">
                                                             <thead>
                                                                 <tr>
@@ -346,7 +346,7 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        <div class="menber_info">成员信息：</div>
+                                                        <div class="table_legend">成员信息：</div>
                                                         <div class="empty">
                                                             <div class="dadao_empty"></div>
                                                             <div class="empty_text">暂时没有待处理的事项</div>

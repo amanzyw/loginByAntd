@@ -63233,6 +63233,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var confirm = _modal2.default.confirm;
 var Option = _select2.default.Option;
 var PhoneRegister = /^1[34578]\d{9}$/;
+var EmailRegister = /^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})$/;
 var firstShow = true;
 
 var trSexNumToText = function trSexNumToText(numOrText, reverse) {
@@ -63457,10 +63458,19 @@ var AccountInfoMation = function (_React$Component4) {
 
         var _this4 = _possibleConstructorReturn(this, (AccountInfoMation.__proto__ || Object.getPrototypeOf(AccountInfoMation)).call(this, props));
 
+        var userInfoMation = _this4.props.userInfoMation;
         _this4.state = {
             isEditingUname: false,
             isEditingInfo: false,
-            editInfos: {}
+            editInfos: {
+                nickname: userInfoMation.nickname,
+                fullname: userInfoMation.full_name,
+                age: userInfoMation.age,
+                sex: userInfoMation.sex,
+                position: userInfoMation.position,
+                departMent: userInfoMation.departMent || "开发部",
+                sign: userInfoMation.sign || "小蚂蚁掉眼泪，那都不是事！"
+            }
         };
         return _this4;
     }
@@ -63481,10 +63491,13 @@ var AccountInfoMation = function (_React$Component4) {
                 _message2.default.info("用户名只能是字母数字下划线，并且以字母开头，3-11位！", 1.5, function () {});
                 return;
             }
-            this.props.unameChangeBack(e, value);
-            this.state = {
+            //this.props.unameChangeBack(e,value);
+            var editInfos = Object.assign({}, this.state.editInfos, { nickname: value });
+            console.log(editInfos);
+            this.setState({
+                editInfos: editInfos,
                 isEditingUname: false
-            };
+            });
         }
     }, {
         key: 'writeUnameHandle',
@@ -63497,16 +63510,16 @@ var AccountInfoMation = function (_React$Component4) {
         key: 'editingInfoHandle',
         value: function editingInfoHandle(e) {
             var fullNameDOM = _reactDom2.default.findDOMNode(this.refs.fullname),
-                full_name = fullNameDOM.value,
+                fullname = fullNameDOM.value,
                 ageDOM = _reactDom2.default.findDOMNode(this.refs.age),
                 age = ageDOM.value,
                 positionDOM = _reactDom2.default.findDOMNode(this.refs.position),
                 position = positionDOM.value,
                 departMentDOM = _reactDom2.default.findDOMNode(this.refs.departMent),
-                departMentValue = departMentDOM.value,
+                departMent = departMentDOM.value,
                 signDOM = _reactDom2.default.findDOMNode(this.refs.sign),
-                signValue = signDOM.value;
-            var values = { full_name: full_name, age: age, position: position, departMentValue: departMentValue, signValue: signValue };
+                sign = signDOM.value;
+            var values = { fullname: fullname, age: age, position: position, departMent: departMent, sign: sign };
             values = Object.assign({}, this.state.editInfos, values);
             this.setState({
                 isEditingInfo: false,
@@ -63527,15 +63540,14 @@ var AccountInfoMation = function (_React$Component4) {
     }, {
         key: 'render',
         value: function render() {
-            var userInfoMation = this.props.userInfoMation,
-                nickname = userInfoMation.nickname,
-                fullname = userInfoMation.full_name,
-                age = userInfoMation.age,
-                sex = userInfoMation.sex,
-                position = userInfoMation.position;
-
-            var departMent = "开发部";
-            var sign = "小蚂蚁掉眼泪，那都不是事！";
+            var editInfos = this.state.editInfos,
+                nickname = editInfos.nickname,
+                fullname = editInfos.fullname,
+                age = editInfos.age,
+                sex = editInfos.sex,
+                position = editInfos.position,
+                departMent = editInfos.departMent,
+                sign = editInfos.sign;
 
             var isEditingUname = this.state.isEditingUname;
             var isEditingInfo = this.state.isEditingInfo;
@@ -63627,9 +63639,7 @@ var AccountInfoMation = function (_React$Component4) {
                                                 { className: 'iblock' },
                                                 _react2.default.createElement(
                                                     'button',
-                                                    { onClick: function (e) {
-                                                            this.unameChangeHandle(e);
-                                                        }.bind(this), className: 'getSure dadao_btn dadao_btn_primary dadao_btn_lg' },
+                                                    { onClick: this.unameChangeHandle.bind(this), className: 'getSure dadao_btn dadao_btn_primary dadao_btn_lg' },
                                                     '\u786E\u8BA4\u4FEE\u6539'
                                                 )
                                             ),
@@ -63754,12 +63764,12 @@ var AccountInfoMation = function (_React$Component4) {
                                         _react2.default.createElement(
                                             'div',
                                             { className: 'me_info_control', style: { marginBottom: "15px" } },
-                                            _react2.default.createElement('input', { ref: 'departMent', className: 'getDepart dadao_input dadao_input_lg', type: 'text', placeholder: '\u90E8\u95E8', defaultValue: '' })
+                                            _react2.default.createElement('input', { ref: 'departMent', className: 'getDepart dadao_input dadao_input_lg', type: 'text', placeholder: '\u90E8\u95E8', defaultValue: departMent })
                                         ),
                                         _react2.default.createElement(
                                             'div',
                                             { className: 'me_info_control', style: { marginBottom: "15px" } },
-                                            _react2.default.createElement('textarea', { ref: 'sign', style: { width: "455px" }, className: 'getSign dadao_textarea', type: 'text', placeholder: '\u4E2A\u6027\u7B7E\u540D', defaultValue: '\u5C0F\u8682\u8681\u6389\u773C\u6CEA\uFF0C\u90A3\u90FD\u4E0D\u662F\u4E8B\uFF01' })
+                                            _react2.default.createElement('textarea', { ref: 'sign', style: { width: "455px" }, className: 'getSign dadao_textarea', type: 'text', placeholder: '\u4E2A\u6027\u7B7E\u540D', defaultValue: sign })
                                         ),
                                         _react2.default.createElement(
                                             'div',
@@ -64065,15 +64075,19 @@ var AccountBind = function (_React$Component6) {
 
         var _this6 = _possibleConstructorReturn(this, (AccountBind.__proto__ || Object.getPrototypeOf(AccountBind)).call(this, props));
 
+        var userInfoMation = _this6.props.userInfoMation;
         _this6.state = {
             isBindingPhone: false,
             isBindingEmail: false,
             isBindingWX: false,
-            isGetting: false
+            isGetting: false,
+            remenberPhoneNum: "",
+            phoneNum: userInfoMation.mobile_phone,
+            email: userInfoMation.email
         };
         _this6.sendPhoneConfig = {
             totalTime: 10,
-            currentTime: 10
+            currentTime: 0
         };
         return _this6;
     }
@@ -64100,6 +64114,9 @@ var AccountBind = function (_React$Component6) {
                     that.sendPhoneConfig.currentTime = time;
                     if (time <= 0) {
                         btn.innerHTML = "发送验证码";
+                        that.setState({
+                            isGetting: false
+                        });
                         clearInterval(timer);
                     } else {
                         btn.innerHTML = time + "s后重新发送";
@@ -64130,6 +64147,83 @@ var AccountBind = function (_React$Component6) {
             this.setState({
                 isBindingPhone: true
             });
+            var currentTime = this.sendPhoneConfig.currentTime,
+                that = this;
+            if (currentTime != 0) {
+                setTimeout(function () {
+                    that.getPhoneNum();
+                }, 1);
+            }
+        }
+    }, {
+        key: 'getPhoneNumBlur',
+        value: function getPhoneNumBlur() {
+            var phoneNum = _reactDom2.default.findDOMNode(this.refs.phoneNum);
+            this.setState({
+                remenberPhoneNum: phoneNum.value
+            });
+        }
+    }, {
+        key: 'getPhoneNumCancel',
+        value: function getPhoneNumCancel() {
+            this.setState({ isBindingPhone: false, isGetting: false });
+        }
+    }, {
+        key: 'bindRightNow',
+        value: function bindRightNow() {
+            var phoneNum = _reactDom2.default.findDOMNode(this.refs.phoneNum);
+            this.setState({
+                phoneNum: phoneNum.value,
+                isBindingPhone: false
+            });
+        }
+        //发送邮箱验证码
+
+    }, {
+        key: 'sendEmailCode',
+        value: function sendEmailCode() {
+            var emailAddress = _reactDom2.default.findDOMNode(this.refs.emailAddress),
+                emailVal = emailAddress.value,
+                that = this;
+            if (!EmailRegister.test(emailVal)) {
+                _message2.default.info("请输入一个有效的邮箱地址", 1.5, function () {
+                    that.setState({
+                        isGetting: false
+                    });
+                });
+            }
+        }
+        //修改手机
+
+    }, {
+        key: 'gotoChangePhoneNum',
+        value: function gotoChangePhoneNum() {
+            this.setState({
+                isBindingPhone: true
+            });
+            var currentTime = this.sendPhoneConfig.currentTime,
+                that = this;
+            if (currentTime != 0) {
+                setTimeout(function () {
+                    that.getPhoneNum();
+                }, 1);
+            }
+        }
+        //修改邮箱
+
+    }, {
+        key: 'gotoChangeEmail',
+        value: function gotoChangeEmail() {
+            this.setState({
+                isBindingEmail: true
+            });
+        }
+    }, {
+        key: 'gotoBindEmail',
+        value: function gotoBindEmail() {
+            this.setState({
+                isBindingEmail: true
+            });
         }
     }, {
         key: 'componentDidMount',
@@ -64147,8 +64241,117 @@ var AccountBind = function (_React$Component6) {
             var isBindingPhone = this.state.isBindingPhone,
                 isBindingEmail = this.state.isBindingEmail,
                 isBindingWX = this.state.isBindingWX,
-                isGetting = this.state.isGetting;
-            var show = void 0;
+                isGetting = this.state.isGetting,
+                isRemenberNum = this.state.remenberPhoneNum;
+            var PhoneNum = this.state.phoneNum,
+                email = this.state.email;
+            var showCurrentPanel = PhoneNum == "" || PhoneNum == null ? _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'uname' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'iblock key w_auto' },
+                        '\u5F53\u524D\u624B\u673A\u53F7\u7801\u4E3A\uFF1A'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'iblock value' },
+                        '\u672A\u8BBE\u7F6E'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'change_item' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.gotoBindPhoneNum.bind(this), className: 'dadao_btn dadao_btn_lg' },
+                        '\u7ED1\u5B9A\u624B\u673A\u53F7'
+                    )
+                )
+            ) : _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'uname' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'iblock key w_auto' },
+                        '\u5F53\u524D\u624B\u673A\u53F7\u7801\u4E3A\uFF1A'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'iblock value' },
+                        PhoneNum
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'change_item' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.gotoChangePhoneNum.bind(this), className: 'dadao_btn dadao_btn_lg' },
+                        '\u4FEE\u6539\u624B\u673A\u53F7'
+                    )
+                )
+            );
+            var showCurrentEmailPanel = email == "" || email == null ? _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'uname' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'iblock key w_auto' },
+                        '\u5F53\u524D\u90AE\u7BB1\u5730\u5740\u4E3A\uFF1A'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'iblock value' },
+                        '\u672A\u8BBE\u7F6E'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'change_item' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.gotoBindEmail.bind(this), className: 'dadao_btn dadao_btn_lg' },
+                        '\u7ED1\u5B9A\u90AE\u7BB1'
+                    )
+                )
+            ) : _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'uname' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'iblock key w_auto' },
+                        '\u5F53\u524D\u90AE\u7BB1\u5730\u5740\u4E3A\uFF1A'
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'iblock value' },
+                        email
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'change_item' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.gotoChangeEmail.bind(this), className: 'dadao_btn dadao_btn_lg' },
+                        '\u4FEE\u6539\u90AE\u7BB1'
+                    )
+                )
+            );
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -64190,7 +64393,7 @@ var AccountBind = function (_React$Component6) {
                                             _react2.default.createElement(
                                                 'div',
                                                 { className: 'pheone_input li' },
-                                                _react2.default.createElement('input', { ref: 'phoneNum', type: 'text', className: 'dadao_input dadao_input_lg', placeholder: '\u8BF7\u8F93\u5165\u4F60\u7684\u624B\u673A\u53F7\u7801' })
+                                                _react2.default.createElement('input', { ref: 'phoneNum', type: 'text', className: 'dadao_input dadao_input_lg', placeholder: '\u8BF7\u8F93\u5165\u4F60\u7684\u624B\u673A\u53F7\u7801', onBlur: this.getPhoneNumBlur.bind(this), defaultValue: isRemenberNum })
                                             ),
                                             _react2.default.createElement(
                                                 'div',
@@ -64218,9 +64421,7 @@ var AccountBind = function (_React$Component6) {
                                                     { className: 'iblock cancel' },
                                                     _react2.default.createElement(
                                                         'button',
-                                                        { onClick: function () {
-                                                                this.setState({ isBindingPhone: false, isGetting: false });
-                                                            }.bind(this), className: 'dadao_btn dadao_btn_lg' },
+                                                        { onClick: this.getPhoneNumCancel.bind(this), className: 'dadao_btn dadao_btn_lg' },
                                                         '\u53D6\u6D88'
                                                     )
                                                 ),
@@ -64229,39 +64430,13 @@ var AccountBind = function (_React$Component6) {
                                                     { className: 'iblock get_sure' },
                                                     _react2.default.createElement(
                                                         'button',
-                                                        { className: 'dadao_btn dadao_btn_lg dadao_btn_primary' },
+                                                        { onClick: this.bindRightNow.bind(this), className: 'dadao_btn dadao_btn_lg dadao_btn_primary' },
                                                         '\u7ED1\u5B9A\u624B\u673A\u53F7\u7801'
                                                     )
                                                 )
                                             )
                                         )
-                                    ) : _react2.default.createElement(
-                                        'div',
-                                        null,
-                                        _react2.default.createElement(
-                                            'div',
-                                            { className: 'uname' },
-                                            _react2.default.createElement(
-                                                'div',
-                                                { className: 'iblock key w_auto' },
-                                                '\u5F53\u524D\u624B\u673A\u53F7\u7801\u4E3A\uFF1A'
-                                            ),
-                                            _react2.default.createElement(
-                                                'div',
-                                                { className: 'iblock value' },
-                                                '\u672A\u8BBE\u7F6E'
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'div',
-                                            { className: 'change_item' },
-                                            _react2.default.createElement(
-                                                'button',
-                                                { onClick: this.gotoBindPhoneNum.bind(this), className: 'dadao_btn dadao_btn_lg' },
-                                                '\u7ED1\u5B9A\u624B\u673A\u53F7'
-                                            )
-                                        )
-                                    )
+                                    ) : showCurrentPanel
                                 )
                             )
                         ),
@@ -64294,7 +64469,7 @@ var AccountBind = function (_React$Component6) {
                                         _react2.default.createElement(
                                             'div',
                                             { className: 'pheone_input li' },
-                                            _react2.default.createElement('input', { id: 'emailAddress', type: 'text', className: 'dadao_input dadao_input_lg', placeholder: '\u8BF7\u8F93\u5165\u60A8\u7684\u90AE\u7BB1\u5730\u5740' })
+                                            _react2.default.createElement('input', { ref: 'emailAddress', type: 'text', className: 'dadao_input dadao_input_lg', placeholder: '\u8BF7\u8F93\u5165\u60A8\u7684\u90AE\u7BB1\u5730\u5740' })
                                         ),
                                         _react2.default.createElement(
                                             'div',
@@ -64315,40 +64490,12 @@ var AccountBind = function (_React$Component6) {
                                                 { className: 'iblock send_code' },
                                                 _react2.default.createElement(
                                                     'button',
-                                                    { id: 'send_email_code', className: 'dadao_btn dadao_btn_lg dadao_btn_primary' },
+                                                    { onClick: this.sendEmailCode.bind(this), className: 'dadao_btn dadao_btn_lg dadao_btn_primary' },
                                                     '\u53D1\u9001\u90AE\u7BB1\u9A8C\u8BC1'
                                                 )
                                             )
                                         )
-                                    ) : _react2.default.createElement(
-                                        'div',
-                                        null,
-                                        _react2.default.createElement(
-                                            'div',
-                                            { className: 'uname' },
-                                            _react2.default.createElement(
-                                                'div',
-                                                { className: 'iblock key w_auto' },
-                                                '\u5F53\u524D\u90AE\u7BB1\u5730\u5740\u4E3A\uFF1A'
-                                            ),
-                                            _react2.default.createElement(
-                                                'div',
-                                                { className: 'iblock value' },
-                                                '\u672A\u8BBE\u7F6E'
-                                            )
-                                        ),
-                                        _react2.default.createElement(
-                                            'div',
-                                            { className: 'change_item' },
-                                            _react2.default.createElement(
-                                                'button',
-                                                { onClick: function () {
-                                                        this.setState({ isBindingEmail: true });
-                                                    }.bind(this), className: 'dadao_btn dadao_btn_lg' },
-                                                '\u7ED1\u5B9A\u90AE\u7BB1'
-                                            )
-                                        )
-                                    )
+                                    ) : showCurrentEmailPanel
                                 )
                             )
                         ),
@@ -64483,7 +64630,7 @@ var MessageSetting = function (_React$Component7) {
                                             _react2.default.createElement(
                                                 'div',
                                                 { onClick: function () {
-                                                        this.setState({ closeMsgByClient: !this.state.closeMsgByClient });
+                                                        _message2.default.success("修改成功！", 1.5);this.setState({ closeMsgByClient: !this.state.closeMsgByClient });
                                                     }.bind(this), 'data-toggle': 'switch', className: 'dadao_switch dadao_switch_checked' },
                                                 _react2.default.createElement('div', { className: 'dadao_switch_inner' })
                                             )
@@ -64516,7 +64663,7 @@ var MessageSetting = function (_React$Component7) {
                                             _react2.default.createElement(
                                                 'div',
                                                 { onClick: function () {
-                                                        this.setState({ closeMsgByClient: !this.state.closeMsgByClient });
+                                                        _message2.default.success("修改成功！", 1.5);this.setState({ closeMsgByClient: !this.state.closeMsgByClient });
                                                     }.bind(this), 'data-toggle': 'switch', className: 'dadao_switch' },
                                                 _react2.default.createElement('div', { className: 'dadao_switch_inner' })
                                             )
@@ -64572,7 +64719,7 @@ var MessageSetting = function (_React$Component7) {
                                             _react2.default.createElement(
                                                 'div',
                                                 { onClick: function () {
-                                                        this.setState({ closeMsgByEmail: !this.state.closeMsgByEmail });
+                                                        _message2.default.success("修改成功！", 1.5);this.setState({ closeMsgByEmail: !this.state.closeMsgByEmail });
                                                     }.bind(this), 'data-toggle': 'switch', className: 'dadao_switch dadao_switch_checked' },
                                                 _react2.default.createElement('div', { className: 'dadao_switch_inner' })
                                             )
@@ -64605,7 +64752,7 @@ var MessageSetting = function (_React$Component7) {
                                             _react2.default.createElement(
                                                 'div',
                                                 { onClick: function () {
-                                                        this.setState({ closeMsgByEmail: !this.state.closeMsgByEmail });
+                                                        _message2.default.success("修改成功！", 1.5);this.setState({ closeMsgByEmail: !this.state.closeMsgByEmail });
                                                     }.bind(this), 'data-toggle': 'switch', className: 'dadao_switch' },
                                                 _react2.default.createElement('div', { className: 'dadao_switch_inner' })
                                             )
@@ -64662,7 +64809,7 @@ var MessageSetting = function (_React$Component7) {
                                             _react2.default.createElement(
                                                 'a',
                                                 { className: 'wx_bind', onClick: function (e) {
-                                                        e.preventDefault();this.props.gotoTabPanel(3);
+                                                        e.preventDefault();_common2.default.storageFunc.set("accountPanelIndex", 3);this.props.gotoTabPanel(3);
                                                     }.bind(this), title: '\u7ED1\u5B9A\u5FAE\u4FE1' },
                                                 '\u7ED1\u5B9A'
                                             )
@@ -64699,7 +64846,7 @@ var MessageSetting = function (_React$Component7) {
                                             _react2.default.createElement(
                                                 'div',
                                                 { onClick: function () {
-                                                        this.setState({ closeMsgByPhone: !this.state.closeMsgByPhone });
+                                                        _message2.default.success("修改成功！", 1.5);this.setState({ closeMsgByPhone: !this.state.closeMsgByPhone });
                                                     }.bind(this), 'data-toggle': 'switch', className: 'dadao_switch dadao_switch_checked' },
                                                 _react2.default.createElement('div', { className: 'dadao_switch_inner' })
                                             )
@@ -64732,7 +64879,7 @@ var MessageSetting = function (_React$Component7) {
                                             _react2.default.createElement(
                                                 'div',
                                                 { onClick: function () {
-                                                        this.setState({ closeMsgByPhone: !this.state.closeMsgByPhone });
+                                                        _message2.default.success("修改成功！", 1.5);this.setState({ closeMsgByPhone: !this.state.closeMsgByPhone });
                                                     }.bind(this), 'data-toggle': 'switch', className: 'dadao_switch' },
                                                 _react2.default.createElement('div', { className: 'dadao_switch_inner' })
                                             )
@@ -64777,15 +64924,10 @@ var Account = function (_React$Component8) {
 
         var _this8 = _possibleConstructorReturn(this, (Account.__proto__ || Object.getPrototypeOf(Account)).call(this, props));
 
-        var queryIndex = null;
-        if (window.location.search != undefined || window.location.search != "") {
-            queryIndex = _common2.default.getURLparams("tab");
-            _common2.default.storageFunc.set("accountPanelIndex", queryIndex);
-        }
-        var index = queryIndex || _common2.default.storageFunc.get("accountPanelIndex");
-        index = index == undefined ? "1" : index;
+        var queryIndex = _common2.default.storageFunc.get("accountPanelIndex");
+        queryIndex = queryIndex == "null" || queryIndex == null ? 1 : queryIndex;
         _this8.state = {
-            currentIndex: index,
+            currentIndex: queryIndex,
             isLoading: true,
             tips: null,
             userInfoMation: {}
