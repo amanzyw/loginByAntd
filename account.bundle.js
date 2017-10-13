@@ -63459,12 +63459,13 @@ var AccountInfoMation = function (_React$Component4) {
         var _this4 = _possibleConstructorReturn(this, (AccountInfoMation.__proto__ || Object.getPrototypeOf(AccountInfoMation)).call(this, props));
 
         var userInfoMation = _this4.props.userInfoMation;
+        console.log(userInfoMation);
         _this4.state = {
             isEditingUname: false,
             isEditingInfo: false,
             editInfos: {
                 nickname: userInfoMation.nickname,
-                fullname: userInfoMation.full_name,
+                fullname: userInfoMation.full_name || userInfoMation.username,
                 age: userInfoMation.age,
                 sex: userInfoMation.sex,
                 position: userInfoMation.position,

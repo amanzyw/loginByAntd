@@ -17,6 +17,66 @@
                 common.tooltip();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
+                var getHTML=function(){
+                    var getData=function(){
+                        var dtd=$.Deferred();
+                        $.ajax({
+                            url:"http://ee-api-test.baijiakeji.cn/v1/employees/getapps",
+                            type:"post",
+                            async:true,
+                            headers:{
+                                Authorization:"Bearer ZWVfBNgrhxu1QX9F2t59HeJ2keo1Nwul7f3+SmwwXzE1MDc4MDA2MzU="
+                            },
+                            data:{
+                                id:"37245E5A-C97E-5780-218F-5593967B6CA3"
+                            },
+                            dataType:"json",
+                            success:function(data){
+                                dtd.resolve(data);
+                            },
+                            error:function(){
+                                dtd.reject(arguments);
+                            }
+                        });
+                        return dtd.promise();
+                    }
+                    $.when(getData()).done(function(data){
+                        console.log(data);
+                        var html="",
+                            getURL=function(arr_actions,app_code){
+                                var result=[];
+                                $.each(arr_actions,function(idx,item){
+                                    var tamp="/v"+item["version"]+"/"+app_code+"s/"+item["action_code"];
+                                    result.push(tamp);
+                                });
+                                return result;
+                            }
+                        $.each(data,function(idx,item){
+                            var apps="";
+                            $.each(item["apps"],function(index,one){
+                                var urls=getURL(one["actions"],one["app_code"]);
+                                console.log(urls);
+                                apps+='<div class="app_cell" data-app_code="'+one["app_code"]+'">';
+                                apps+=    '<a class="block" href="#" target="_self" title="'+one["app_desc"]+'">';
+                                apps+=         '<div class="app_img img_de4" style="background:url(http://ee-admin-test.baijiakeji.cn'+one["icon_url"]+') no-repeat center center;"></div>';
+                                apps+=         '<span class="itxt">'+one["app_name"]+'</span>';
+                                apps+=    '</a>';
+                                apps+='</div>';
+                            });
+                            html+='<li class="app_item management" data-company_id="'+item["company_id"]+'" data-del="'+item["company_id"]+'" data-desc="'+item["desc"]+'" data-group_id="'+item["group_id"]+'" data-groupid="'+item["groupid"]+'" data-status="'+item["status"]+'" data-update_time="'+item["update_time"]+'">';
+                            html+=    '<div class="app_text">'+item["name"]+'</div>';
+                            html+=         '<div class="app_content clearfix">';
+                            html+=              apps;
+                            html+=         '</div>';
+                            html+=    '</div>';
+                            html+='</li>';
+                        });
+                        $("#application").prepend(html);
+                    }).fail(function(data){
+                        throw new Error("网络出错!");
+                    });
+                }
+                getHTML();
             });
         </script>
     </head>
@@ -127,7 +187,7 @@
                             <div class="body_inner default_width">
                                 <div class="application_box">
                                     <div class="application_main_view">
-                                        <ul class="application_list application">
+                                        <ul id="application" class="application_list application">
                                             <li class="app_item management">
                                                 <div class="app_text">经营</div>
                                                 <div class="app_content clearfix">
