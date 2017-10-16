@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 09:10:09
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-12 17:44:38
+* @Last Modified time: 2017-10-16 11:16:20
 */
 
 .clearfix{
@@ -19,7 +19,6 @@
 .fr{
     float:right;
 }
-
 
 #window,#viewport{
     width:100%;
@@ -723,6 +722,8 @@
 /*通讯录内容区域样式start*/
 .mail_list_box{
     height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
     box-sizing: border-box;
 }
 .display_box{

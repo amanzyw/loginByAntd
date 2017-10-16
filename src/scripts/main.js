@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 11:48:37
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-09-23 14:46:55
+* @Last Modified time: 2017-10-14 17:22:31
 */
 
 'use strict';
@@ -152,5 +152,45 @@ var common={
             }
         }
         return result;
-    })()
+    })(),
+    changeHeaderInfo:function(){
+        var user_model=$(".user_model"),
+            date=user_model.find(".date"),
+            name=$("#uname"),
+            tamp=null,
+            that=this,
+            transNumtoCNStr=function(num){
+                var result=null;
+                switch(num){
+                    case 0:
+                        result="日";
+                        break;
+                    case 1:
+                        result="一";
+                        break;
+                    case 2:
+                        result="二";
+                        break;
+                    case 3:
+                        result="三";
+                        break;
+                    case 4:
+                        result="四";
+                        break;
+                    case 5:
+                        result="五";
+                        break;
+                    case 6:
+                        result="六";
+                        break;
+                }
+                return result;
+            };
+        tamp=new Date();
+        tamp=tamp.getFullYear()+"年"+(tamp.getMonth()+1)+"月"+tamp.getDate()+"日"+" "+"星期"+transNumtoCNStr(tamp.getDay())
+        date.text(tamp);
+        tamp=JSON.parse(that.storageFunc.get("userInfoMation"));
+        tamp=tamp&&(tamp["username"]||tamp["nickname"]);
+        name.text(tamp);
+    }
 }

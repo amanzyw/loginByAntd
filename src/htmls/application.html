@@ -18,17 +18,18 @@
                 //左下角头像点击面板
                 common.hoverHeaderPic();
                 var getHTML=function(){
+                    var URL="http://ee-api-test.baijiakeji.cn";
                     var getData=function(){
                         var dtd=$.Deferred();
                         $.ajax({
-                            url:"http://ee-api-test.baijiakeji.cn/v1/employees/getapps",
+                            url:URL+"/v1/employees/getapps",
                             type:"post",
                             async:true,
                             headers:{
-                                Authorization:"Bearer ZWVfBNgrhxu1QX9F2t59HeJ2keo1Nwul7f3+SmwwXzE1MDc4MDA2MzU="
+                                Authorization:"Bearer "+JSON.parse(window.localStorage.getItem("userLoginInfo"))["token"]
                             },
                             data:{
-                                id:"37245E5A-C97E-5780-218F-5593967B6CA3"
+                                id:JSON.parse(window.localStorage.getItem("userInfoMation"))["emp_id"]
                             },
                             dataType:"json",
                             success:function(data){
@@ -42,12 +43,25 @@
                     }
                     $.when(getData()).done(function(data){
                         console.log(data);
+                        if(data["code"]=="10010"){
+                            alert("token过期，请重新登录！");
+                            return;
+                        }
                         var html="",
                             getURL=function(arr_actions,app_code){
                                 var result=[];
                                 $.each(arr_actions,function(idx,item){
+                                    var obj=new Object();
                                     var tamp="/v"+item["version"]+"/"+app_code+"s/"+item["action_code"];
-                                    result.push(tamp);
+                                    obj["url"]=tamp;
+                                    obj["method"]=item["meth"];
+                                    obj["params"]=JSON.parse(item["params"]);
+                                    if(obj["params"]!=undefined){
+                                        obj["params"]=obj["params"].join(",");
+                                    }else{
+                                        obj["params"]="";
+                                    }
+                                    result.push(obj);
                                 });
                                 return result;
                             }
@@ -55,13 +69,22 @@
                             var apps="";
                             $.each(item["apps"],function(index,one){
                                 var urls=getURL(one["actions"],one["app_code"]);
-                                console.log(urls);
-                                apps+='<div class="app_cell" data-app_code="'+one["app_code"]+'">';
-                                apps+=    '<a class="block" href="#" target="_self" title="'+one["app_desc"]+'">';
-                                apps+=         '<div class="app_img img_de4" style="background:url(http://ee-admin-test.baijiakeji.cn'+one["icon_url"]+') no-repeat center center;"></div>';
-                                apps+=         '<span class="itxt">'+one["app_name"]+'</span>';
-                                apps+=    '</a>';
-                                apps+='</div>';
+                                if(idx==1){
+                                    apps+='<div class="app_cell" data-app_code="'+one["app_code"]+'">';
+                                    apps+=    '<a class="block" href="application1.html?getURL='+urls[1]["url"]+'&&getMethod='+urls[1]["method"]+'&&getParams='+urls[1]["params"]+'&&postURL='+urls[0]["url"]+'&&postMethod='+urls[0]["method"]+'&&postParams='+urls[0]["params"]+'" target="_self" title="'+one["app_desc"]+'">';
+                                    apps+=         '<div class="app_img img_de4" style="background:url(http://ee-admin-test.baijiakeji.cn'+one["icon_url"]+') no-repeat center center;"></div>';
+                                    apps+=         '<span class="itxt">'+one["app_name"]+'</span>';
+                                    apps+=    '</a>';
+                                    apps+='</div>';
+                                }else{
+                                    apps+='<div class="app_cell" data-app_code="'+one["app_code"]+'">';
+                                    apps+=    '<a class="block" href="#" target="_self" title="'+one["app_desc"]+'">';
+                                    apps+=         '<div class="app_img img_de4" style="background:url(http://ee-admin-test.baijiakeji.cn'+one["icon_url"]+') no-repeat center center;"></div>';
+                                    apps+=         '<span class="itxt">'+one["app_name"]+'</span>';
+                                    apps+=    '</a>';
+                                    apps+='</div>';
+                                }
+
                             });
                             html+='<li class="app_item management" data-company_id="'+item["company_id"]+'" data-del="'+item["company_id"]+'" data-desc="'+item["desc"]+'" data-group_id="'+item["group_id"]+'" data-groupid="'+item["groupid"]+'" data-status="'+item["status"]+'" data-update_time="'+item["update_time"]+'">';
                             html+=    '<div class="app_text">'+item["name"]+'</div>';
@@ -77,6 +100,7 @@
                     });
                 }
                 getHTML();
+                common.changeHeaderInfo();
             });
         </script>
     </head>
@@ -97,7 +121,7 @@
                                 <div class="user fr">
                                     <div class="user_model">
                                         <span class="date">2017年8月22日 星期二</span>
-                                        <span class="welcome">欢迎您，XXXX </span>
+                                        <span class="welcome">欢迎您，<i id="uname">xxx</i> </span>
                                     </div>
                                 </div>
                             </div>
@@ -158,16 +182,16 @@
                                         <div style="display:none;" class="ui_user_panel">
                                             <ul class="ui_user_list">
                                                 <li class="panel_item">
-                                                    <a href="personal_setting.html" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',1)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
                                                 </li>
                                                 <li class="panel_item">
-                                                    <a href="reset_psd.html" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',2)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
                                                 </li>
                                                 <li class="panel_item">
-                                                    <a href="account_bind.html" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',3)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
                                                 </li>
                                                 <li class="panel_item bd_none">
-                                                    <a href="message_tips.html" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',4)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
                                                 </li>
                                                 <li class="line"></li>
                                                 <li class="panel_item quot">
@@ -188,7 +212,7 @@
                                 <div class="application_box">
                                     <div class="application_main_view">
                                         <ul id="application" class="application_list application">
-                                            <li class="app_item management">
+                                            <!-- <li class="app_item management">
                                                 <div class="app_text">经营</div>
                                                 <div class="app_content clearfix">
                                                     <div class="app_cell">
@@ -320,7 +344,7 @@
                                                         </a>
                                                     </div>
                                                 </div>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </div>
                                 </div>

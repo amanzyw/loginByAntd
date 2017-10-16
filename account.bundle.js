@@ -63459,13 +63459,12 @@ var AccountInfoMation = function (_React$Component4) {
         var _this4 = _possibleConstructorReturn(this, (AccountInfoMation.__proto__ || Object.getPrototypeOf(AccountInfoMation)).call(this, props));
 
         var userInfoMation = _this4.props.userInfoMation;
-        console.log(userInfoMation);
         _this4.state = {
             isEditingUname: false,
             isEditingInfo: false,
             editInfos: {
                 nickname: userInfoMation.nickname,
-                fullname: userInfoMation.full_name || userInfoMation.username,
+                fullname: userInfoMation.username || userInfoMation.full_name,
                 age: userInfoMation.age,
                 sex: userInfoMation.sex,
                 position: userInfoMation.position,
@@ -63592,12 +63591,13 @@ var AccountInfoMation = function (_React$Component4) {
                                         { className: 'setting_btn iblock uploader-container' },
                                         _react2.default.createElement(
                                             'label',
-                                            { id: 'filePicker', className: 'dadao_btn dadao_btn_lg webuploader-container' },
+                                            { id: 'filePicker', className: 'dadao_btn dadao_btn_lg webuploader-container', style: { position: "relative" } },
                                             _react2.default.createElement(
                                                 'div',
                                                 { className: 'webuploader-pick' },
                                                 '\u8BBE\u7F6E\u5934\u50CF'
-                                            )
+                                            ),
+                                            _react2.default.createElement('input', { type: 'file', id: 'filePicker', style: { position: "absolute", left: "0", top: "0", width: "100%", height: "100%", clip: "rect(0,0,0,0)" } })
                                         )
                                     )
                                 )
@@ -63605,7 +63605,7 @@ var AccountInfoMation = function (_React$Component4) {
                         ),
                         _react2.default.createElement(
                             'div',
-                            { className: 'account_item account_li' },
+                            { style: { display: "none" }, className: 'account_item account_li' },
                             _react2.default.createElement(
                                 'div',
                                 { className: 'cell_title' },

@@ -62936,7 +62936,6 @@ var LoginModel = function (_React$Component) {
                             } else {
                                 _common2.default.storageFunc.remove("userLoginMode");
                             }
-
                             _message2.default.success("登录成功", 1.5, function () {
                                 if (DEVELOP_ENV) {
                                     window.location.href = "./src/htmls/account.html";

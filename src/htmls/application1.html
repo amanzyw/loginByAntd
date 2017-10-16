@@ -18,22 +18,33 @@
                 common.tooltip();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
-                var getHTML=function(){
+                var getXport=function(){
+                    var getParams=function(){
+                        var url=window.location.href,tamp=null,result=new Object();
+                        url=url.split("?");
+                        url[1].split("&&").forEach(function(item,idx){
+                            tamp=item.split("=");
+                            result[tamp[0]]=tamp[1];
+                        });
+                        return result;
+                    }
+                    var a=getParams();
+                    console.log(a);
                     $.ajax({
-                        url:"http://ee-api-test.baijiakeji.cn/v1/new3s/addpage",
+                        url:"http://ee-api-test.baijiakeji.cn"+a["getURL"],
+                        method:a["getMethod"],
                         async:true,
                         headers:{
-                            Authorization:"Bearer ZWVf+7RP3PygrzxGEyn/+Mmota62F0nqYg8XeXs2XzE1MDc3MTYwNTI="
+                            Authorization:"Bearer ZWVf4adPHQ9JszU43KK+2pjKnVn0UYTtX0QckYLYXzE1MDc4ODcwODI="
                         },
                         dataType:"json",
                         success:function(data){
-                            //console.log(data);
-                            console.log(data);
-                            $("#id").html(data);
+                            $("#data-box").html(data);
                         }
+
                     });
                 }
-                getHTML();
+                getXport();
                 common.changeHeaderInfo();
             });
         </script>
@@ -143,7 +154,9 @@
                     <section id="main_body" class="main_body">
                         <div class="view_main_body">
                             <div class="body_inner default_width">
-                                <div id="id"></div>
+                                <div class="application_box">
+                                    <div id="data-box"></div>
+                                </div>
                             </div>
                         </div>
                     </section>

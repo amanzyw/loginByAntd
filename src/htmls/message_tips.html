@@ -33,6 +33,7 @@
                     var switchBtn=$("#setting_disturb").find("[data-toggle='switch']");
                     console.log(switchBtn)
                 }
+                common.changeHeaderInfo();
             });
         </script>
     </head>
@@ -53,7 +54,7 @@
                                 <div class="user fr">
                                     <div class="user_model">
                                         <span class="date">2017年8月22日 星期二</span>
-                                        <span class="welcome">欢迎您，XXXX </span>
+                                        <span class="welcome">欢迎您，<i id="uname">xxx</i> </span>
                                     </div>
                                 </div>
                             </div>
@@ -114,16 +115,16 @@
                                         <div style="display:none;" class="ui_user_panel">
                                             <ul class="ui_user_list">
                                                 <li class="panel_item">
-                                                    <a href="personal_setting.html" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',1)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-account"></span>账户资料</a>
                                                 </li>
                                                 <li class="panel_item">
-                                                    <a href="reset_psd.html" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',2)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-password"></span>修改密码</a>
                                                 </li>
                                                 <li class="panel_item">
-                                                    <a href="account_bind.html" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',3)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-binding"></span>账号绑定</a>
                                                 </li>
                                                 <li class="panel_item bd_none">
-                                                    <a href="message_tips.html" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
+                                                    <a onclick="window.localStorage.setItem('accountPanelIndex',4)" href="account.html" class="block atance" target="_self"><span class="DaDao DaDao-__"></span>消息提醒</a>
                                                 </li>
                                                 <li class="line"></li>
                                                 <li class="panel_item quot">

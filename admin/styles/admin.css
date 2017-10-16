@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-31 14:11:49
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-10-07 14:51:10
+* @Last Modified time: 2017-10-16 11:23:16
 */
 .login_header{
     height:70px;
@@ -45,6 +45,25 @@
     left:0;
     background:url(../images/klfjkl1293dkfldf90123kf.png) no-repeat 124px 103px;
     z-index:100;
+}
+.form-group .text-light{
+    font-size:14px;
+    font-weight:normal;
+}
+.get_quot{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    line-height: 50px;
+    color:#666;
+    width: 100%;
+    text-align: center;
+    background: #d8dfe7;
+    cursor:pointer;
+}
+.get_quot:hover{
+    color:#ff8700;
 }
 .sun_light{
     position:absolute;
