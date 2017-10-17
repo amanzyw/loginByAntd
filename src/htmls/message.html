@@ -24,9 +24,11 @@
                         drop_line=tab.find(".drop_line");
                     var tabBottom=$("#tab_bottom_box"),
                         tabItems=tabBottom.find(".tab_cnt_item"),
-                        tabItem_width=tabItems.eq(0).width(),
+                        /*tabItem_width=tabItems.eq(0).width(),*/
+                        tabItem_width=$("#tab").width(),
                         tabItem_height=tabItems.eq(0).height(),
                         tab_content=$("#tab_content");
+                    first_tab.eq(0).addClass("active").siblings().removeClass("active");
                     tab_content.css({
                         "width":tabItem_width,
                         "overflow":"hidden"
@@ -46,9 +48,12 @@
                         "overflow":"hidden"
                     });
                     drop_line.css({
-                        "left":first_tab.offset().left-tab_box.offset().left
+                        "left":first_tab.offset().left-tab_box.offset().left,
+                        "width":first_tab.eq(0).outerWidth()
                     });
+                    first_tab.off("click");
 
+                        console.log(111,tabItem_width);
                     first_tab.on("click",function(){
                         if(animating==true){
                             return;
@@ -66,6 +71,9 @@
                             animating=false;
                         });
                         $(this).addClass("active").siblings().removeClass("active");
+                        drop_line.css({
+                            width:$(this).outerWidth()
+                        });
                         drop_line.animate({
                             left:left-tab_box.offset().left
                         },300,"swing",function(){
@@ -115,6 +123,9 @@
                 }
                 //tab切换
                 tabSwitch();
+                $(window).on("resize",function(){
+                    tabSwitch();
+                });
                 //全选
                 checkedAll();
                 //左下角头像点击面板
@@ -185,7 +196,7 @@
                                 </ul>
                                 <div class="menu_setting">
                                     <div class="setting_item setting_u">
-                                        <a class="setting_link" data-tooltip="后台管理" data-arrow-direction="right" href="../../admin/htmls/login.html" target="admin">
+                                        <a class="setting_link" data-tooltip="后台管理" data-arrow-direction="right" href="http://ee-manage-test.baijiakeji.cn/site/login.html" target="admin">
                                             <span class="DaDao DaDao-houtai-kehuguanli"></span>
                                         </a>
                                     </div>
@@ -243,8 +254,20 @@
                                         <div id="tab_content" class="tab_content">
                                             <div id="tab_bottom_box" class="tab_bottom_box">
                                                 <div class="tab_cnt_item active">
-                                                    <div id="unread_frame" class="message message_unread table_padding_box">
-                                                        <table class="ui_table dadao_table table_default table_striped table_hover">
+                                                    <div id="unread_frame" class="message message_unread">
+                                                        <div class="classify clearfix">
+                                                            <div class="legend fl">未读消息：</div>
+                                                            <div class="fr">
+                                                                <select class="dadao_select dadao_select_info">
+                                                                    <option value="0">全部</option>
+                                                                    <option value="1">系统消息</option>
+                                                                    <option value="2">成员加入</option>
+                                                                    <option value="3">文件资料</option>
+                                                                    <option value="4">业务提醒</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <table class="ui_table dadao_table table_strick">
                                                             <thead>
                                                                 <tr>
                                                                     <th width="58">
@@ -268,11 +291,9 @@
                                                                         </label>
                                                                     </td>
                                                                     <td>
-                                                                        <a class="menber" href="#" target="_self">xxx</a>
-                                                                        添加了
-                                                                        <a class="fj" download="滨江路二期工程优化设计.pdf" href="../styles/cssrest.css" title="点击下载">
+                                                                        您提交的项目<a class="fj" download="滨江路二期工程优化设计.pdf" href="../styles/cssrest.css" title="点击下载">
                                                                             滨江路二期工程优化设计.pdf
-                                                                        </a>
+                                                                        </a>备案登记审核已通过
                                                                     </td>
                                                                     <td>系统消息</td>
                                                                     <td>2017/08/05</td>
@@ -330,18 +351,6 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        <div class="classify">
-                                                            <div class="legend fl">未读消息：</div>
-                                                            <div class="fr">
-                                                                <select class="dadao_select dadao_select_info">
-                                                                    <option value="0">全部</option>
-                                                                    <option value="1">系统消息</option>
-                                                                    <option value="2">成员加入</option>
-                                                                    <option value="3">文件资料</option>
-                                                                    <option value="4">业务提醒</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
                                                         <div class="empty">
                                                             <div class="dadao_empty"></div>
                                                             <div class="empty_text">暂时没有消息</div>
@@ -349,8 +358,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="tab_cnt_item">
-                                                    <div class="message message_unread table_padding_box">
-                                                        <table class="ui_table dadao_table table_default table_striped table_hover">
+                                                    <div class="message message_unread">
+                                                        <div class="table_legend">已读消息：</div>
+                                                        <table class="ui_table dadao_table table_strick">
                                                             <thead>
                                                                 <tr>
                                                                     <th>消息内容</th>
@@ -396,7 +406,6 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        <div class="table_legend">已读消息：</div>
                                                         <div class="empty">
                                                             <div class="dadao_empty"></div>
                                                             <div class="empty_text">暂时没有消息</div>

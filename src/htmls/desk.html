@@ -11,7 +11,6 @@
         <link rel="stylesheet" href="../styles/cssrest.css" />
         <link rel="stylesheet" href="../styles/app.css" />
         <link rel="stylesheet" href="http://at.alicdn.com/t/font_392605_w094gou4uzddkj4i.css" />
-        <link rel="stylesheet" href="../../styles/bootstrap.min.css" />
         <script>
             $(document).ready(function(){
                 //开启tooltip提示
@@ -25,9 +24,11 @@
                         drop_line=tab.find(".drop_line");
                     var tabBottom=$("#tab_bottom_box"),
                         tabItems=tabBottom.find(".tab_cnt_item"),
-                        tabItem_width=tabItems.eq(0).width(),
+                        /*tabItem_width=tabItems.eq(0).width(),*/
+                        tabItem_width=$(".DD_tab").width(),
                         tabItem_height=tabItems.eq(0).height(),
                         tab_content=$("#tab_content");
+                    first_tab.eq(0).addClass("active").siblings().removeClass("active");
                     tab_content.css({
                         "width":tabItem_width,
                         "overflow":"hidden"
@@ -47,9 +48,10 @@
                         "overflow":"hidden"
                     });
                     drop_line.css({
-                        "left":first_tab.offset().left-tab_box.offset().left
+                        "left":first_tab.offset().left-tab_box.offset().left,
+                        "width":first_tab.eq(0).outerWidth()
                     });
-
+                    first_tab.off("click");
                     first_tab.on("click",function(){
                         if(animating==true){
                             return;
@@ -67,6 +69,9 @@
                             animating=false;
                         });
                         $(this).addClass("active").siblings().removeClass("active");
+                        drop_line.css({
+                            width:$(this).outerWidth()
+                        });
                         drop_line.animate({
                             left:left-tab_box.offset().left
                         },300,"swing",function(){
@@ -150,6 +155,9 @@
                 producting.setOption(option);
                 //tab切换
                 tabSwitch();
+                $(window).on("resize",function(){
+                    tabSwitch();
+                });
                 //左下角头像点击面板
                 common.hoverHeaderPic();
                 common.changeHeaderInfo();
@@ -218,7 +226,7 @@
                                 </ul>
                                 <div class="menu_setting">
                                     <div class="setting_item setting_u">
-                                        <a class="setting_link" data-tooltip="后台管理" data-arrow-direction="right" href="../../admin/htmls/login.html" target="admin">
+                                        <a class="setting_link" data-tooltip="后台管理" data-arrow-direction="right" href="http://ee-manage-test.baijiakeji.cn/site/login.html" target="admin">
                                             <span class="DaDao DaDao-houtai-kehuguanli"></span>
                                         </a>
                                     </div>
@@ -274,14 +282,14 @@
                                             <div id="tab_content" class="tab_content">
                                                 <div id="tab_bottom_box" class="tab_bottom_box">
                                                     <div class="tab_cnt_item active">
-                                                        <div class="desk_table table table_padding_box">
-                                                            <table class="ui_table dadao_table table_default table_striped table_hover">
+                                                        <div class="desk_table table">
+                                                            <table class="ui_table dadao_table table_strick">
                                                                 <thead>
                                                                     <tr>
                                                                         <th>流程名称</th>
                                                                         <th>任务名称</th>
-                                                                        <th>剩余时间</th>
-                                                                        <th>操作</th>
+                                                                        <th width="120">剩余时间</th>
+                                                                        <th width="160">操作</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -290,11 +298,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>
@@ -305,11 +313,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>
@@ -320,11 +328,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>
@@ -352,14 +360,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="tab_cnt_item">
-                                                        <div class="desk_table table table_padding_box">
-                                                            <table class="ui_table dadao_table table_default table_striped table_hover">
+                                                        <div class="desk_table table">
+                                                            <table class="ui_table dadao_table table_strick">
                                                                 <thead>
                                                                     <tr>
                                                                         <th>流程名称</th>
                                                                         <th>任务名称</th>
-                                                                        <th>剩余时间</th>
-                                                                        <th>操作</th>
+                                                                        <th width="120">剩余时间</th>
+                                                                        <th width="160">操作</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -368,11 +376,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>
@@ -383,11 +391,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>
@@ -398,11 +406,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>
@@ -413,11 +421,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>
@@ -428,11 +436,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>
@@ -443,11 +451,11 @@
                                                                         <td>***滨江路二期工程优化设计</td>
                                                                         <td>1天</td>
                                                                         <td>
-                                                                            <a class="" href="javascript:void(0);" title="查看详情">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="查看详情">
                                                                                 <span class="DaDao DaDao-chakanxiangqing"></span>
                                                                                 查看详情
                                                                             </a>
-                                                                            <a class="" href="javascript:void(0);" title="处理">
+                                                                            <a class="iblock content-padding" href="javascript:void(0);" title="处理">
                                                                                 <span class="DaDao DaDao-dealapplyIcon"></span>
                                                                                 处理
                                                                             </a>

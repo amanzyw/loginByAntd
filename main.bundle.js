@@ -63090,11 +63090,6 @@ var LoginModel = function (_React$Component) {
                     { className: 'user-other-operation' },
                     _react2.default.createElement(
                         'span',
-                        { className: 'pass-item', onClick: this.getRegisterPanel.bind(this) },
-                        '\u65B0\u7528\u6237\u6CE8\u518C'
-                    ),
-                    _react2.default.createElement(
-                        'span',
                         { className: 'pass-item', onClick: this.getForgetPsdPanel.bind(this) },
                         '\u5FD8\u8BB0\u5BC6\u7801'
                     )
@@ -63115,6 +63110,7 @@ var LoginModel = function (_React$Component) {
 
     return LoginModel;
 }(_react2.default.Component);
+/*<span className="pass-item" onClick={this.getRegisterPanel.bind(this)}>新用户注册</span>*/
 
 var WrappedLoginModel = _form2.default.create({})(LoginModel);
 
