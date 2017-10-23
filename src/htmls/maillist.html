@@ -4,14 +4,215 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <script type="text/javascript" src="../../commonFunc.bundle.js"></script>
+        <script type="text/javascript" src="../scripts/socket.js"></script>
         <script type="text/javascript" src="../scripts/jquery1.9.1.min.js"></script>
         <script type="text/javascript" src="../scripts/main.js"></script>
         <script type="text/javascript" src="../scripts/old.main.js"></script>
+        <script type="text/javascript" src="../scripts/plugins/bootstrap-tree/js/bootstrap-treeview.js"></script>
+        <script type="text/javascript" src="../scripts/plugins/bootstrap-table/js/bootstrap-table.js"></script>
+        <script type="text/javascript" src="../scripts/plugins/jquery-page/js/jquery.page.js"></script>
+        <script>
+            common.getMsg();
+        </script>
+        <link rel="stylesheet" href="../../styles/bootstrap.min.css" />
+        <link rel="stylesheet" href="../scripts/plugins/bootstrap-tree/css/bootstrap-treeview.css" />
+        <link rel="stylesheet" href="../styles/antd.css" />
         <link rel="stylesheet" href="../styles/cssrest.css" />
         <link rel="stylesheet" href="../styles/app.css" />
         <link rel="stylesheet" href="http://at.alicdn.com/t/font_392605_irdk89uxsf9a4i.css" />
         <script>
+            var getUrlInfo=common.getUrlInfo,
+                URL=getUrlInfo.URL,
+                version=getUrlInfo.version,
+                currentIndex=1,
+                url=URL+"/"+version,
+                maxPage=null,
+                pageSize=10,
+                pageNo=1;
+
+            //获取组织架构
+            var getorgs=function(){
+                var htmlCode=function(data){
+                    var tamp="";
+                    $.each(data,function(idx,item){
+                        tamp+="<li>";
+                        tamp+=    '<span class="ant-select-tree-switcher ant-select-tree-switcher_close"></span>';
+                        tamp+=    '<span title="parent 1" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-open"><span class="ant-select-tree-title">'+item["text"]+'</span></span>';
+                        if($.isArray(item["nodes"])&&item["nodes"].length!=0){
+                            tamp+=htmlCode(item["children"]);
+                        }
+                        tamp+="</li>";
+                    });
+                    return tamp;
+                }
+                //http://ee-api-test.baijiakeji.cn/v1/defaults/getorgs
+                $.ajax({
+                    url:url+"/defaults/getorgs",
+                    type:"get",
+                    async:true,
+                    headers:{
+                        Authorization:"Bearer "+JSON.parse(window.localStorage.getItem("userLoginInfo"))["token"]
+                    },
+                    success:function(data){
+                        if(data.code!=undefined){
+                            antdObj.message.error("获取信息出错，请重新登录！",1.5,function(){
+                                common.storageFunc.removeAll();
+                                window.location.href="/";
+                            });
+                        }
+                        var result=data;
+                        /*
+                        var html=htmlCode(result);
+                        $(".ant-select-tree").html(html);*/
+                        $('#tree_node').treeview({
+                            data:result,
+                            emptyIcon:"glyphicon glyphicon-stop",
+                            levels:"1",
+                            onNodeSelected:function(event,data){
+                                var router=[];
+                                var getRouter=function(data){
+                                    var parentNode=$('#tree_node').treeview('getParent',data);
+                                    if(parentNode["nodeId"]!=undefined){
+                                        router.unshift('<span class="route_item">'+data["text"]+"</span>");
+                                        getRouter(parentNode);
+                                    }else{
+                                        router.unshift('<span class="route_item">'+data["text"]+"</span>");
+                                    }
+                                }
+                                getRouter(data);
+                                $("#ui_router").html(router.join('<span class="arrow">&gt;&gt;</span>'));
+                                $.ajax({
+                                    url:url+"/defaults/getemployees",
+                                    type:"post",
+                                    async:true,
+                                    headers:{
+                                        Authorization:"Bearer "+JSON.parse(window.localStorage.getItem("userLoginInfo"))["token"]
+                                    },
+                                    dataType:"json",
+                                    data:{
+                                        id:data["org_id"],
+                                        pagesize:pageSize,
+                                        pageno:pageNo
+                                    },
+                                    success:function(data){
+                                        var data1=data["employees"];
+                                        maxPage=data["count"];
+                                        var html="";
+                                        if(data1.length==0){
+                                            $("#tbody").html('<tr><td colspan="6"><div class="empty"><div class="dadao_empty"></div><div class="empty_text">暂时没有成员信息!</div></div></td></tr>');
+                                            $(".tcdPageCode").empty();
+                                        }else{
+                                            $.each(data1,function(idx,item){
+                                                html+="<tr data-menber-id='"+item["org_id"]+"'>";
+                                                html+=    "<td>"+item["username"]+"</td>";
+                                                html+=    "<td>"+item["mobile_phone"]+"</td>";
+                                                html+=    "<td>"+item["email"]+"</td>";
+                                                html+=    "<td>"+item["name"]+"</td>";
+                                                html+=    "<td>"+(item["position"]||"")+"</td>";
+                                                html+="</tr>";
+                                            });
+                                            $("#tbody").html(html);
+                                            $(".tcdPageCode").createPage({
+                                                pageCount:Math.ceil(maxPage/pageSize),
+                                                current:currentIndex,
+                                                backFn:function(p){
+                                                    pageNo=p;
+                                                    currentIndex=p;
+                                                    getMenber();
+                                                }
+                                            });
+                                        }
+                                    },
+                                    error:function(){
+                                        antdObj.message.error("获取成员信息出错！");
+                                    }
+                                })
+                                /*$('#table').bootstrapTable({
+                                    columns: [{
+                                        field: 'id',
+                                        title: 'Item ID'
+                                    }, {
+                                        field: 'name',
+                                        title: 'Item Name'
+                                    }, {
+                                        field: 'price',
+                                        title: 'Item Price'
+                                    }],
+                                    data: [{
+                                        id: 1,
+                                        name: 'Item 1',
+                                        price: '$1'
+                                    }, {
+                                        id: 2,
+                                        name: 'Item 2',
+                                        price: '$2'
+                                    }]
+                                });*/
+                            }
+                        });
+                    },
+                    error:function(){
+                        antdObj.message.error("获取组织架构出错！");
+                    }
+                });
+            };
+            //获取成员信息
+            var getMenber=function(){
+                $.ajax({
+                    url:url+"/defaults/getemployees",
+                    type:"post",
+                    async:true,
+                    headers:{
+                        Authorization:"Bearer "+JSON.parse(window.localStorage.getItem("userLoginInfo"))["token"]
+                    },
+                    dataType:"json",
+                    data:{
+                        pagesize:pageSize,
+                        pageno:pageNo
+                    },
+                    success:function(data){
+                        var idata=data["employees"];
+                        var html="";
+                        maxPage=data["count"]-0;
+                        if(idata.length==0){
+                            $("#tbody").html('<tr><td colspan="6"><div class="empty"><div class="dadao_empty"></div><div class="empty_text">暂时没有成员信息！</div></div></td></tr>');
+                        }else{
+                            $.each(idata,function(idx,item){
+                                html+="<tr data-menber-id='"+item["org_id"]+"'>";
+                                html+=    "<td>"+item["username"]+"</td>";
+                                html+=    "<td>"+item["mobile_phone"]+"</td>";
+                                html+=    "<td>"+item["email"]+"</td>";
+                                html+=    "<td>"+item["name"]+"</td>";
+                                html+=    "<td>"+(item["position"]||"")+"</td>";
+                                html+="</tr>";
+                            });
+                            $("#tbody").html(html);
+                            $(".tcdPageCode").createPage({
+                                pageCount:Math.ceil(maxPage/pageSize),
+                                current:currentIndex,
+                                backFn:function(p){
+                                    pageNo=p;
+                                    currentIndex=p;
+                                    getMenber();
+                                }
+                            });
+                        }
+                    },
+                    error:function(){
+                        antdObj.message.error("获取成员信息出错！");
+                    }
+                })
+            }
+
+
             $(document).ready(function(){
+                if(!common.isLogin){
+                    antdObj.message.info("您还没有登录!",1.5,function(){
+                        window.location.href="/";
+                    });
+                    return;
+                }
                 //开启tooltip提示
                 common.tooltip();
                 //树形结构交互
@@ -36,7 +237,10 @@
                         alert("选中了："+text);
                     });
                 }
-                tree_node();
+                //获取组织架构
+                getorgs();
+                //获取成员信息
+                getMenber();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
                 common.changeHeaderInfo();
@@ -134,7 +338,7 @@
                                                 </li>
                                                 <li class="line"></li>
                                                 <li class="panel_item quot">
-                                                    <a href="javascript:void(0);" class="block atance" target="_self">退出系统</a>
+                                                    <a href="javascript:void(0);" onclick="common.toQuot()" class="block atance" target="_self">退出系统</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -152,10 +356,13 @@
                                     <div class="display_box box_wrap">
                                         <div class="ui_group">
                                             <div class="group_text">组织架构</div>
-                                            <div id="tree_node" class="ant-select-dropdown ant-select-tree-dropdown ant-select-dropdown--single ant-select-dropdown-placement-bottomLeft">
+                                            <div onclick="getMenber()" style="text-align: left;padding: 9px 14px 9px;">
+                                                <a href="javascript:void(0);">全体成员</a>
+                                            </div>
+                                            <div id="tree_node" class="">
                                                 <div>
                                                     <ul class="ant-select-tree" role="tree-node" unselectable="true">
-                                                        <li class="">
+                                                         <!-- <li class="">
                                                             <span class="ant-select-tree-switcher ant-select-tree-switcher_open"></span>
                                                             <span title="parent 1" class="ant-select-tree-node-content-wrapper ant-select-tree-node-content-wrapper-open">
                                                                 <span class="ant-select-tree-title">中交柏嘉工程技术研究院</span>
@@ -262,7 +469,7 @@
                                                                     </span>
                                                                 </li>
                                                             </ul>
-                                                        </li>
+                                                        </li>-->
                                                     </ul>
                                                 </div>
                                             </div>
@@ -272,19 +479,19 @@
                                         </div>
                                         <div class="mail_content_inner">
                                             <div class="group_by">
-                                                <div class="ui_router">
-                                                    <span class="route_item">中交柏嘉工程技术研究院</span>
+                                                <div id="ui_router" class="ui_router">
+                                                    <!-- <span class="route_item">中交柏嘉工程技术研究院</span>
                                                     <span class="arrow">&gt;&gt;</span>
                                                     <span class="route_item">生产部</span>
                                                     <span class="arrow">&gt;&gt;</span>
-                                                    <span class="route_item active">西安分院</span>
+                                                    <span class="route_item active">西安分院</span> -->
+                                                    <span class="route_item">全体成员</span>
                                                 </div>
                                                 <div class="group_table">
                                                     <div class="desk_table table maillist_table">
                                                         <table class="ui_table dadao_table table_strick">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>ID</th>
                                                                     <th>姓名</th>
                                                                     <th>电话</th>
                                                                     <th>邮箱</th>
@@ -292,179 +499,8 @@
                                                                     <th>职务</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                            <tbody id="tbody">
                                                                 <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
-                                                                    <td>
-                                                                        <a class="menber" href="#">
-                                                                            <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
-                                                                        </a>
-                                                                        张有为
-                                                                    </td>
-                                                                    <td>13484538788</td>
-                                                                    <td>13484538788@139.com</td>
-                                                                    <td>互联网研究院</td>
-                                                                    <td>web开发</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>201710100949</td>
                                                                     <td>
                                                                         <a class="menber" href="#">
                                                                             <img class="menber_img" src="../images/examples/3401888993773024.jpg" alt="张有为" />
@@ -478,10 +514,23 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        <div class="table_legend">成员信息：</div>
-                                                        <div class="empty">
+                                                        <!-- <div class="empty">
                                                             <div class="dadao_empty"></div>
                                                             <div class="empty_text">暂时没有待处理的事项</div>
+                                                        </div> -->
+                                                    </div>
+                                                    <div id="pager" class="">
+                                                        <div class="desk_pager_outer">
+                                                            <div class="tcdPageCode">
+                                                                <button class="dadao_btn" disabled="">上一页</button>
+                                                                <button class="dadao_btn">1</button>
+                                                                <button class="dadao_btn" href="javascript:;">2</button>
+                                                                <button class="dadao_btn" href="javascript:;">3</button>
+                                                                <button class="dadao_btn" href="javascript:;">4</button>
+                                                                <span>...</span>
+                                                                <button class="dadao_btn" href="javascript:;">22</button>
+                                                                <button class="dadao_btn" href="javascript:;">下一页</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

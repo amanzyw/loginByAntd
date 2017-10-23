@@ -4,24 +4,32 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <link rel="stylesheet" href="../styles/antd.css" />
+        <script type="text/javascript" src="../../commonFunc.bundle.js"></script>
+        <script type="text/javascript" src="../scripts/socket.js"></script>
+        <script type="text/javascript" src="../scripts/jquery1.9.1.min.js"></script>
+        <script type="text/javascript" src="../scripts/echarts.simple.min.js"></script>
+        <script type="text/javascript" src="../scripts/main.js"></script>
+        <script type="text/javascript" src="../scripts/old.main.js"></script>
+        <script>
+            common.getMsg();
+        </script>
         <link rel="stylesheet" href="../styles/antd.css" />
         <link rel="stylesheet" href="../styles/cssrest.css" />
         <link rel="stylesheet" href="../styles/app.css" />
         <link rel="stylesheet" href="http://at.alicdn.com/t/font_392605_w094gou4uzddkj4i.css" />
-        <script type="text/javascript" src="../../commonFunc.bundle.js"></script>
-        <script type="text/javascript" src="../scripts/socket.js"></script>
-        <script type="text/javascript" src="../scripts/jquery1.9.1.min.js"></script>
-        <script type="text/javascript" src="../scripts/main.js"></script>
-        <script>
-            common.getMsg();
-        </script>
         <script>
             $(document).ready(function(){
+                if(!common.isLogin){
+                    antdObj.message.info("您还没有登录登录!",1.5,function(){
+                        window.location.href="/";
+                    });
+                    return;
+                }
                 //开启tooltip提示
                 common.tooltip();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
+                //修改右上角昵称
                 common.changeHeaderInfo();
             });
         </script>
@@ -70,7 +78,7 @@
                                             <span class="DaDao DaDao-yingyongzhongxin"></span>
                                         </a>
                                     </li>
-                                    <li class="menu_item">
+                                    <li class="menu_item active">
                                         <a class="menu_link" data-tooltip="消息" data-arrow-direction="right" href="./message.html" target="_self">
                                             <span class="DaDao DaDao-xiaoxi1"></span>
                                         </a>
@@ -93,7 +101,7 @@
                                         </a>
                                     </div>
                                     <!-- <div class="setting_item setting_t">
-                                        <a class="setting_link active" data-tooltip="用户设置" data-arrow-direction="right" href="../htmls/">
+                                        <a class="setting_link" data-tooltip="用户设置" data-arrow-direction="right" href="javascript:void(0);">
                                             <span class="DaDao DaDao-gerenshezhi"></span>
                                         </a>
                                     </div> -->
@@ -131,11 +139,83 @@
                     <section id="main_body" class="main_body">
                         <div class="view_main_body">
                             <div class="body_inner default_width">
-                                <!-- 个人设置start -->
-                                <div class="personal_setting_view setting_view_box">
-                                    <div id="root"></div>
+                                <div class="message_box">
+                                    <div id="tab" class="ui_tab message_tab">
+                                        <div class="tab_header">
+                                            <div class="tab_top_box">
+                                                <div class="tab_item">
+                                                    <a class="alink" href="./message.html" target="_self">未读消息</a>
+                                                </div>
+                                                <div class="tab_item active">
+                                                    <a class="alink" href="./message_readed.html" target="_self">已读消息</a>
+                                                    <div class="drop_line"></div>
+                                                </div>
+                                                <div class="fr set_read">
+                                                    <button class="dadao_btn">标记为已读</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="tab_content" class="tab_content">
+                                            <div id="tab_bottom_box" class="tab_bottom_box">
+                                                <div class="tab_cnt_item active">
+                                                    <div class="message message_unread">
+                                                        <div class="table_legend">已读消息：</div>
+                                                        <table class="ui_table dadao_table table_strick">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>消息内容</th>
+                                                                    <th width="98">时间</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a class="menber" href="#" target="_self">xxx</a>
+                                                                        添加了
+                                                                        <a class="fj" download="滨江路二期工程优化设计.pdf" href="../styles/cssrest.css" title="点击下载">
+                                                                            滨江路二期工程优化设计.pdf
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>2017/08/05</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a class="menber" href="#" target="_self">xxx</a>
+                                                                        添加了
+                                                                        <a class="fj" download="滨江路二期工程优化设计.pdf" href="../styles/cssrest.css" title="点击下载">
+                                                                            滨江路二期工程优化设计.pdf
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>2017/08/05</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>***滨江路二期工程优化设计</td>
+                                                                    <td>2017/08/05</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>***滨江路二期工程优化设计</td>
+                                                                    <td>2017/08/05</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>***滨江路二期工程优化设计</td>
+                                                                    <td>2017/08/05</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>***滨江路二期工程优化设计</td>
+                                                                    <td>2017/08/05</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="empty">
+                                                            <div class="dadao_empty"></div>
+                                                            <div class="empty_text">暂时没有消息</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- 个人设置end -->
                             </div>
                         </div>
                     </section>
@@ -143,6 +223,5 @@
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="../../account.bundle.js"></script>
     </body>
 </html>

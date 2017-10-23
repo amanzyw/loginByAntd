@@ -4,10 +4,16 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <script type="text/javascript" src="../../commonFunc.bundle.js"></script>
+        <script type="text/javascript" src="../scripts/socket.js"></script>
         <script type="text/javascript" src="../scripts/jquery1.9.1.min.js"></script>
         <script type="text/javascript" src="../scripts/echarts.simple.min.js"></script>
         <script type="text/javascript" src="../scripts/main.js"></script>
         <script type="text/javascript" src="../scripts/old.main.js"></script>
+        <script>
+            common.getMsg();
+        </script>
+        <link rel="stylesheet" href="../styles/antd.css" />
         <link rel="stylesheet" href="../styles/cssrest.css" />
         <link rel="stylesheet" href="../styles/app.css" />
         <link rel="stylesheet" href="http://at.alicdn.com/t/font_392605_w094gou4uzddkj4i.css" />
@@ -18,11 +24,17 @@
                 //左下角头像点击面板
                 common.hoverHeaderPic();
                 var getHTML=function(){
-                    var URL="http://ee-api-test.baijiakeji.cn";
+                    var URL=common.getUrlInfo.URL+"/"+common.getUrlInfo.version;
+                    if(!common.isLogin){
+                        antdObj.message.info("您还没有登录登录!",1.5,function(){
+                            window.location.href="/";
+                        });
+                        return;
+                    }
                     var getData=function(){
                         var dtd=$.Deferred();
                         $.ajax({
-                            url:URL+"/v1/employees/getapps",
+                            url:URL+"/employees/getapps",
                             type:"post",
                             async:true,
                             headers:{
@@ -65,35 +77,43 @@
                                 });
                                 return result;
                             }
-                        $.each(data,function(idx,item){
-                            var apps="";
-                            $.each(item["apps"],function(index,one){
-                                var urls=getURL(one["actions"],one["app_code"]);
-                                if(idx==1){
-                                    apps+='<div class="app_cell" data-app_code="'+one["app_code"]+'">';
-                                    apps+=    '<a class="block" href="application1.html?getURL='+urls[1]["url"]+'&&getMethod='+urls[1]["method"]+'&&getParams='+urls[1]["params"]+'&&postURL='+urls[0]["url"]+'&&postMethod='+urls[0]["method"]+'&&postParams='+urls[0]["params"]+'" target="_self" title="'+one["app_desc"]+'">';
-                                    apps+=         '<div class="app_img img_de4" style="background:url(http://ee-admin-test.baijiakeji.cn'+one["icon_url"]+') no-repeat center center;"></div>';
-                                    apps+=         '<span class="itxt">'+one["app_name"]+'</span>';
-                                    apps+=    '</a>';
-                                    apps+='</div>';
-                                }else{
-                                    apps+='<div class="app_cell" data-app_code="'+one["app_code"]+'">';
-                                    apps+=    '<a class="block" href="#" target="_self" title="'+one["app_desc"]+'">';
-                                    apps+=         '<div class="app_img img_de4" style="background:url(http://ee-admin-test.baijiakeji.cn'+one["icon_url"]+') no-repeat center center;"></div>';
-                                    apps+=         '<span class="itxt">'+one["app_name"]+'</span>';
-                                    apps+=    '</a>';
-                                    apps+='</div>';
-                                }
+                        if(data.length==0){
+                            html+='<div class="empty">';
+                            html+=  '<div class="dadao_empty"></div>';
+                            html+=  '<div class="empty_text">暂时没有应用！</div>';
+                            html+='</div>';
+                        }else{
+                            $.each(data,function(idx,item){
+                                var apps="";
+                                $.each(item["apps"],function(index,one){
+                                    var urls=getURL(one["actions"],one["app_code"]);
+                                    /*if(idx==1){
+                                        apps+='<div class="app_cell" data-app_code="'+one["app_code"]+'">';
+                                        apps+=    '<a class="block" href="application1.html?getURL='+urls[1]["url"]+'&&getMethod='+urls[1]["method"]+'&&getParams='+urls[1]["params"]+'&&postURL='+urls[0]["url"]+'&&postMethod='+urls[0]["method"]+'&&postParams='+urls[0]["params"]+'" target="_self" title="'+one["app_desc"]+'">';
+                                        apps+=         '<div class="app_img img_de4" style="background:url(http://ee-admin-test.baijiakeji.cn'+one["icon_url"]+') no-repeat center center;"></div>';
+                                        apps+=         '<span class="itxt">'+one["app_name"]+'</span>';
+                                        apps+=    '</a>';
+                                        apps+='</div>';
+                                    }*/
+                                    if(1){
+                                        apps+='<div class="app_cell" data-app_code="'+one["app_code"]+'">';
+                                        apps+=    '<a class="block" href="application1.html?getURL='+urls[0]["url"]+'&&getMethod='+urls[0]["method"]+'&&getParams='+urls[0]["params"]+'">';
+                                        apps+=         '<div class="app_img img_de4" style="background:url(http://ee-admin-test.baijiakeji.cn'+one["icon_url"]+') no-repeat center center;"></div>';
+                                        apps+=         '<span class="itxt">'+one["app_name"]+'</span>';
+                                        apps+=    '</a>';
+                                        apps+='</div>';
+                                    }
 
+                                });
+                                html+='<li class="app_item management" data-company_id="'+item["company_id"]+'" data-del="'+item["company_id"]+'" data-desc="'+item["desc"]+'" data-group_id="'+item["group_id"]+'" data-groupid="'+item["groupid"]+'" data-status="'+item["status"]+'" data-update_time="'+item["update_time"]+'">';
+                                html+=    '<div class="app_text">'+item["name"]+'</div>';
+                                html+=         '<div class="app_content clearfix">';
+                                html+=              apps;
+                                html+=         '</div>';
+                                html+=    '</div>';
+                                html+='</li>';
                             });
-                            html+='<li class="app_item management" data-company_id="'+item["company_id"]+'" data-del="'+item["company_id"]+'" data-desc="'+item["desc"]+'" data-group_id="'+item["group_id"]+'" data-groupid="'+item["groupid"]+'" data-status="'+item["status"]+'" data-update_time="'+item["update_time"]+'">';
-                            html+=    '<div class="app_text">'+item["name"]+'</div>';
-                            html+=         '<div class="app_content clearfix">';
-                            html+=              apps;
-                            html+=         '</div>';
-                            html+=    '</div>';
-                            html+='</li>';
-                        });
+                        }
                         $("#application").prepend(html);
                     }).fail(function(data){
                         throw new Error("网络出错!");
@@ -195,7 +215,7 @@
                                                 </li>
                                                 <li class="line"></li>
                                                 <li class="panel_item quot">
-                                                    <a href="javascript:void(0);" class="block atance" target="_self">退出系统</a>
+                                                    <a href="javascript:void(0);" onclick="common.toQuot()" class="block atance" target="_self">退出系统</a>
                                                 </li>
                                             </ul>
                                         </div>

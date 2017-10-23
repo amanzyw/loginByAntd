@@ -2,11 +2,49 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 11:48:37
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-10-14 17:22:31
+* @Last Modified time: 2017-10-23 11:59:32
 */
 
 'use strict';
 var common={
+    getUrlInfo:(function(){
+        var URL="http://ee-api-test.baijiakeji.cn",//url地址
+            version="v1",//版本号
+            SocketURL="http://ee-test-im.baijiakeji.cn/";//socket url地址
+        return {
+            URL:URL,
+            version:version,
+            SocketURL:SocketURL
+        }
+    })(),
+    isLogin:(function(){
+        var result=null;
+        if(window.localStorage&&window.localStorage.length==0||window.localStorage&&window.localStorage.getItem("userLoginInfo")==undefined){
+            result=false;
+        }else{
+            result=true;
+        }
+        return result;
+    })(),
+    getMsg:function(){
+        return;
+        var socket = io(this.getUrlInfo.SocketURL),
+            userLoginInfo=JSON.parse(this.storageFunc.get("userLoginInfo")),
+            uuid=null,
+            company=null,
+            clientMsgInfo=null;
+        if(userLoginInfo==undefined){
+            //没有用户信息
+            return;
+        }
+        uuid=userLoginInfo["user"]["id"];
+        company=userLoginInfo["user"]["company_id"];
+        clientMsgInfo={"uuid":uuid,"company":company};
+        socket.on("connect", function() {
+            console.log("socket 连接了..");
+            socket.emit("uid",clientMsgInfo);
+        });
+    },
     tooltip:function(){
         var DOM=[],CreateDOM=[],tooltip=null;
         var timer=null;
@@ -153,7 +191,40 @@ var common={
         }
         return result;
     })(),
-    changeHeaderInfo:function(){
+    toQuot:function(){
+        var that=this;
+        var quot=function(){
+            var dtd=$.Deferred();
+            $.ajax({
+                url:"http://ee-api-test.baijiakeji.cn/v1/employees/logout",
+                type:"post",
+                headers:{
+                    Authorization:"Bearer "+JSON.parse(that.storageFunc.get("userLoginInfo"))["token"]
+                },
+                asunc:true,
+                success:function(data){
+                    dtd.resolve(data);
+                },
+                error:function(){
+                    dtd.reject(arguments);
+                }
+            });
+            return dtd.promise();
+        }
+        $.when(quot()).done(function(data){
+            console.log(data);
+            if(data.code=="10010"){}else{}
+            try{
+                that.storageFunc.removeAll();
+                antdObj.message.success("退出成功！",1.5,function(){
+                    window.location.href="/";
+                });
+            }catch(e){
+
+            }
+        }).fail(function(error){});
+    },
+    changeHeaderInfo:function(){//修改右上角昵称
         var user_model=$(".user_model"),
             date=user_model.find(".date"),
             name=$("#uname"),
@@ -191,6 +262,7 @@ var common={
         date.text(tamp);
         tamp=JSON.parse(that.storageFunc.get("userInfoMation"));
         tamp=tamp&&(tamp["username"]||tamp["nickname"]);
+        tamp=tamp==undefined?"":tamp;
         name.text(tamp);
     }
 }
