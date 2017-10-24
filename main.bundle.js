@@ -51341,10 +51341,13 @@ var common = {
     getUrlInfo: function () {
         var URL = "http://ee-api-test.baijiakeji.cn",
             //url地址
-        version = "v1"; //版本号
+        version = "v1",
+            //版本号
+        SocketURL = "http://ee-test-im.baijiakeji.cn/";
         return {
             URL: URL,
-            version: version
+            version: version,
+            SocketURL: SocketURL
         };
     }(),
     timer1: null,
@@ -51369,6 +51372,34 @@ var common = {
             }
         });
         return result;
+    },
+    isLogin: function () {
+        var result = null;
+        if (window.localStorage && window.localStorage.length == 0 || window.localStorage && window.localStorage.getItem("userLoginInfo") == undefined) {
+            result = false;
+        } else {
+            result = true;
+        }
+        return result;
+    }(),
+    getMsg: function getMsg() {
+        return;
+        var socket = io(this.getUrlInfo.SocketURL),
+            userLoginInfo = JSON.parse(this.storageFunc.get("userLoginInfo")),
+            uuid = null,
+            company = null,
+            clientMsgInfo = null;
+        if (userLoginInfo == undefined) {
+            //没有用户信息
+            return;
+        }
+        uuid = userLoginInfo["user"]["id"];
+        company = userLoginInfo["user"]["company_id"];
+        clientMsgInfo = { "uuid": uuid, "company": company };
+        socket.on("connect", function () {
+            console.log("socket 连接了..");
+            socket.emit("uid", clientMsgInfo);
+        });
     },
     getData: function getData() {},
     /*

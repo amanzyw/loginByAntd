@@ -7,7 +7,7 @@
         <script type="text/javascript" src="../../commonFunc.bundle.js"></script>
         <script type="text/javascript" src="../scripts/socket.js"></script>
         <script type="text/javascript" src="../scripts/jquery1.9.1.min.js"></script>
-        <script type="text/javascript" src="../scripts/echarts.simple.min.js"></script>
+        <script type="text/javascript" src="../scripts/plugins/jquery-page/js/jquery.page.js"></script>
         <script type="text/javascript" src="../scripts/main.js"></script>
         <script type="text/javascript" src="../scripts/old.main.js"></script>
         <script>
@@ -25,11 +25,83 @@
                     });
                     return;
                 }
+                var query=function(){
+                    var pageSize=15,
+                    accountPageObj=$("#account_page"),
+                    currentPageObj=$("#current_page"),
+                    queryUl=$("#qy_ul"),
+                    allQuerys=$("#qy_ul").find(".class_2J_item"),
+                    getData=function(num,size){
+                        var dtd=$.Deferred(),
+                            data={pageno:num,size:size};
+                            $.ajax({
+                            url:"../scripts/testDATA/query.json",
+                            type:"get",
+                            data:data,
+                            async:true,
+                            dataType:"json",
+                            success:function(data){
+                                dtd.resolve(data);
+                            },
+                            error:function(){
+                                dtd.reject(arguments);
+                            }
+                        });
+                        return dtd.promise();
+                    },
+                    renderHTML=function(currentPage,pageSize){
+                        $.when(getData(currentPage,pageSize)).done(function(data){
+                            var account=data["account"],
+                            metaData=data["data"],
+                            tbody=$("#tbody"),
+                            html="",
+                            accountPage=Math.ceil(account/pageSize);
+                            accountPageObj.val(accountPage);
+                            currentPageObj.val(currentPage);
+                            $.each(metaData,function(idx,item){
+                                html+="<tr>";
+                                html+=    "<td>"+(idx+1)+"</td>";
+                                html+=    "<td>"+item["name"]+"</td>";
+                                html+=    "<td>"+item["num"]+"</td>";
+                                html+=    "<td>"+item["mc"]+"</td>";
+                                html+=    "<td>"+item["jyfzr"]+"</td>";
+                                html+=    "<td>"+item["xmfer"]+"</td>";
+                                html+=    "<td>"+item["xmzt"]+"</td>";
+                                html+=    "<td>"+item["zc"]+"</td>";
+                                html+=    "<td>"+item["sr"]+"</td>";
+                                html+=    '<td><a class="iblock content-padding" href="./project_detail.html" title="查看详情"><span class="DaDao DaDaochakanxiangqing"></span>详细</a></td>';
+                                html+="</tr>";
+                            });
+                            tbody.html(html);
+                            $(".tcdPageCode").createPage({
+                                pageCount:accountPage,
+                                current:currentPage,
+                                backFn:function(p){
+                                    currentPage=p;
+                                    currentPageObj.val(p);
+                                    renderHTML(p,pageSize);
+                                }
+                            });
+                        }).fail(function(){
+                            antdObj.message.info("网络出错！");
+                        })
+                    };
+                    queryUl.delegate(".class_2J_item","click",function(){
+                        var pageno=1,
+                            pagesize=pageSize;
+                        $(this).addClass("active").siblings().removeClass("active");
+                        renderHTML(pageno,pagesize);
+                    });
+                    allQuerys.eq(0).trigger("click");
+                }
                 //开启tooltip提示
                 common.tooltip();
                 //左下角头像点击面板
                 common.hoverHeaderPic();
                 common.changeHeaderInfo();
+                //查询
+                query();
+
             });
         </script>
     </head>
@@ -147,8 +219,8 @@
                                                     <span class="iblock">查询</span>
                                                 </div>
                                                 <div class="qy_menu_block">
-                                                    <ul class="qy_ul">
-                                                        <li class="class_2J_item">
+                                                    <ul id="qy_ul" class="qy_ul">
+                                                        <li class="class_2J_item active">
                                                             <a href="javascript:void(0);" class="block item_cell">项目登记备案查询</a>
                                                         </li>
                                                         <li class="class_2J_item">
@@ -227,7 +299,7 @@
                                                                 <th>操作</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        <tbody id="tbody">
                                                             <tr>
                                                                 <td>1</td>
                                                                 <td>
@@ -361,16 +433,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="desk_pager_outer">
-                                                    <div class="tcdPageCode">
-                                                        <button class="dadao_btn" disabled="">上一页</button>
-                                                        <button class="dadao_btn">1</button>
-                                                        <button class="dadao_btn" href="javascript:;">2</button>
-                                                        <button class="dadao_btn" href="javascript:;">3</button>
-                                                        <button class="dadao_btn" href="javascript:;">4</button>
-                                                        <span>...</span>
-                                                        <button class="dadao_btn" href="javascript:;">22</button>
-                                                        <button class="dadao_btn" href="javascript:;">下一页</button>
+                                                    <div class="hidden">
+                                                        <input type="hidden" id="current_page" />
+                                                        <input type="hidden" id="account_page" />
                                                     </div>
+                                                    <div id="pager" class="tcdPageCode"></div>
                                                 </div>
                                             </div>
                                         </div>

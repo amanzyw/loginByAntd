@@ -2,7 +2,7 @@
 * @Author: Wanglj
 * @Date:   2017-08-28 09:10:09
 * @Last Modified by:   Wanglj
-* @Last Modified time: 2017-10-23 14:00:59
+* @Last Modified time: 2017-10-23 14:25:47
 */
 * {
     -webkit-tap-highlight-color: rgba(0,0,0,0)
@@ -131,6 +131,21 @@
     -webkit-transition:all ease 0.2s;
     -moz-transition:all ease 0.2s;
     -ms-transition:all ease 0.2s;
+}
+.menu_item .menu_link .DaDao.DaDao-xiaoxi1{
+    position:relative;
+}
+.message_count{
+    position: absolute;
+    right: 0;
+    top: 0;
+    min-width: 12px;
+    height: 12px;
+    background: #f04134;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 12px;
+
 }
 .menu_item.active .menu_link .DaDao,.menu_item:hover .menu_link .DaDao{
     color:#189ffe;
@@ -1700,10 +1715,14 @@
 }
 .class_2J_item{
     padding:0 20px;
+    border:1px solid transparent;
     transition:transform 0.3s ease-in-out;
     -webkit-transition:transform 0.3s ease-in-out;
     -moz-transition:transform 0.3s ease-in-out;
     -ms-transition:transform 0.3s ease-in-out;
+}
+.class_2J_item.active{
+    border-color:#ddd;
 }
 .class_2J_item .item_cell{
     color:#666;

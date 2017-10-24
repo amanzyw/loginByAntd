@@ -51734,10 +51734,13 @@ var common = {
     getUrlInfo: function () {
         var URL = "http://ee-api-test.baijiakeji.cn",
             //url地址
-        version = "v1"; //版本号
+        version = "v1",
+            //版本号
+        SocketURL = "http://ee-test-im.baijiakeji.cn/";
         return {
             URL: URL,
-            version: version
+            version: version,
+            SocketURL: SocketURL
         };
     }(),
     timer1: null,
@@ -51762,6 +51765,34 @@ var common = {
             }
         });
         return result;
+    },
+    isLogin: function () {
+        var result = null;
+        if (window.localStorage && window.localStorage.length == 0 || window.localStorage && window.localStorage.getItem("userLoginInfo") == undefined) {
+            result = false;
+        } else {
+            result = true;
+        }
+        return result;
+    }(),
+    getMsg: function getMsg() {
+        return;
+        var socket = io(this.getUrlInfo.SocketURL),
+            userLoginInfo = JSON.parse(this.storageFunc.get("userLoginInfo")),
+            uuid = null,
+            company = null,
+            clientMsgInfo = null;
+        if (userLoginInfo == undefined) {
+            //没有用户信息
+            return;
+        }
+        uuid = userLoginInfo["user"]["id"];
+        company = userLoginInfo["user"]["company_id"];
+        clientMsgInfo = { "uuid": uuid, "company": company };
+        socket.on("connect", function () {
+            console.log("socket 连接了..");
+            socket.emit("uid", clientMsgInfo);
+        });
     },
     getData: function getData() {},
     /*
@@ -63748,7 +63779,7 @@ var AccountInfoMation = function (_React$Component4) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'fl account_label' },
-                                    '\xA0'
+                                    '\xA0\u4E2A\u4EBA\u57FA\u672C\u4FE1\u606F'
                                 ),
                                 _react2.default.createElement(
                                     'div',
@@ -64201,7 +64232,9 @@ var AccountBind = function (_React$Component6) {
             isBindingEmail: false,
             isBindingWX: false,
             isGetting: false,
+            isGetting1: false,
             remenberPhoneNum: "",
+            remenberEmail: "",
             phoneNum: userInfoMation.mobile_phone,
             email: userInfoMation.email
         };
@@ -64209,10 +64242,107 @@ var AccountBind = function (_React$Component6) {
             totalTime: 10,
             currentTime: 0
         };
+        _this6.sendEmailConfig = {
+            totalTime: 10,
+            currentTime: 0
+        };
         return _this6;
     }
 
     _createClass(AccountBind, [{
+        key: 'getPhoneCodeNum',
+        value: function getPhoneCodeNum(data) {
+            var dtd = _jquery2.default.Deferred(),
+                getUrlInfo = _common2.default.getUrlInfo,
+                API_URL = getUrlInfo.URL + "/" + getUrlInfo.version,
+                userLoginInfo = _common2.default.storageFunc.get("userLoginInfo"),
+                token = JSON.parse(userLoginInfo)["token"];
+            _jquery2.default.ajax({
+                url: API_URL + "/employees/bind",
+                type: "put",
+                headers: {
+                    "Authorization": "Bearer " + token
+                },
+                async: true,
+                dataType: "json",
+                data: data,
+                success: function success(data) {
+                    dtd.resolve(data);
+                },
+                error: function error() {
+                    dtd.reject(arguments);
+                }
+            });
+            return dtd.promise();
+        }
+    }, {
+        key: 'getEmailCode',
+        value: function getEmailCode() {
+            this.setState({
+                isGetting1: true
+            });
+            var that = this,
+                emailAddress = _reactDom2.default.findDOMNode(this.refs.emailAddress).value,
+                totalTime = this.sendEmailConfig.totalTime,
+                currentTime = this.sendEmailConfig.currentTime,
+                timer = null,
+                getEmailCode = function getEmailCode() {
+                var btn = _reactDom2.default.findDOMNode(that.refs.sendEmailCodeBtn);
+                var time = currentTime <= 0 ? totalTime : currentTime;
+                btn.innerHTML = time + "s后重新发送";
+                clearInterval(timer);
+                timer = setInterval(function () {
+                    time--;
+                    currentTime = time;
+                    that.sendEmailConfig.currentTime = time;
+                    if (time <= 0) {
+                        btn.innerHTML = "发送验证码";
+                        that.setState({
+                            isGetting1: false
+                        });
+                        clearInterval(timer);
+                    } else {
+                        btn.innerHTML = time + "s后重新发送";
+                    }
+                }, 1000);
+            };
+            if (emailAddress == "" || emailAddress == undefined) {
+                _message2.default.info("请输入邮箱地址", 1.5, function () {
+                    that.setState({
+                        isGetting1: false
+                    });
+                });
+                return;
+            }
+            if (!EmailRegister.test(emailAddress)) {
+                _message2.default.info("请输入一个有效的邮箱", 1.5, function () {
+                    that.setState({
+                        isGetting1: false
+                    });
+                });
+                return;
+            }
+
+            _jquery2.default.when(that.getPhoneCodeNum({ email: emailAddress, time: 1 })).done(function (data) {
+                console.log(2222, data);
+                if (data["code"] == undefined) {
+                    //没有错误，发送正确
+                    getEmailCode();
+                } else {
+                    //
+                    _message2.default.info("发送失败，请稍候再试！", 1.5);
+                    that.setState({
+                        isGetting1: false
+                    });
+                }
+            }).fail(function (err) {
+                _message2.default.info("网络出现错误，请稍候再试！", 1.5);
+                that.setState({
+                    isGetting1: false
+                });
+            });
+        }
+    }, {
         key: 'getPhoneNum',
         value: function getPhoneNum() {
             this.setState({
@@ -64259,7 +64389,25 @@ var AccountBind = function (_React$Component6) {
                 });
                 return;
             }
-            getPhoneCode();
+
+            _jquery2.default.when(that.getPhoneCodeNum({ phone: phoneNum, time: 1 })).done(function (data) {
+                console.log(111, data);
+                if (data["code"] == undefined) {
+                    //没有错误，发送正确
+                    getPhoneCode();
+                } else {
+                    //
+                    _message2.default.info("发送失败，请稍候再试！", 1.5);
+                    that.setState({
+                        isGetting: false
+                    });
+                }
+            }).fail(function (err) {
+                _message2.default.info("网络出现错误，请稍候再试！", 1.5);
+                that.setState({
+                    isGetting: false
+                });
+            });
         }
     }, {
         key: 'gotoBindPhoneNum',
@@ -64284,6 +64432,14 @@ var AccountBind = function (_React$Component6) {
             });
         }
     }, {
+        key: 'getEmailBlur',
+        value: function getEmailBlur() {
+            var email = _reactDom2.default.findDOMNode(this.refs.emailAddress);
+            this.setState({
+                remenberEmail: email.value
+            });
+        }
+    }, {
         key: 'getPhoneNumCancel',
         value: function getPhoneNumCancel() {
             this.setState({ isBindingPhone: false, isGetting: false });
@@ -64295,6 +64451,15 @@ var AccountBind = function (_React$Component6) {
             this.setState({
                 phoneNum: phoneNum.value,
                 isBindingPhone: false
+            });
+        }
+    }, {
+        key: 'bindEmailRightNow',
+        value: function bindEmailRightNow() {
+            var email = _reactDom2.default.findDOMNode(this.refs.emailAddress);
+            this.setState({
+                email: email.value,
+                isBindingEmail: false
             });
         }
         //发送邮箱验证码
@@ -64337,6 +64502,14 @@ var AccountBind = function (_React$Component6) {
             this.setState({
                 isBindingEmail: true
             });
+            var currentTime = this.sendEmailConfig.currentTime,
+                that = this;
+            console.log(this.state);
+            if (currentTime != 0) {
+                setTimeout(function () {
+                    that.getEmailCode();
+                }, 1);
+            }
         }
     }, {
         key: 'gotoBindEmail',
@@ -64362,7 +64535,9 @@ var AccountBind = function (_React$Component6) {
                 isBindingEmail = this.state.isBindingEmail,
                 isBindingWX = this.state.isBindingWX,
                 isGetting = this.state.isGetting,
-                isRemenberNum = this.state.remenberPhoneNum;
+                isGetting1 = this.state.isGetting1,
+                isRemenberNum = this.state.remenberPhoneNum,
+                isRemenberEmail = this.state.remenberEmail;
             var PhoneNum = this.state.phoneNum,
                 email = this.state.email;
             var showCurrentPanel = PhoneNum == "" || PhoneNum == null ? _react2.default.createElement(
@@ -64521,7 +64696,7 @@ var AccountBind = function (_React$Component6) {
                                                 _react2.default.createElement(
                                                     'div',
                                                     { className: 'iblock get_code' },
-                                                    _react2.default.createElement('input', { className: 'dadao_input dadao_input_lg', type: 'text', placeholder: '\u9A8C\u8BC1\u7801' })
+                                                    _react2.default.createElement('input', { ref: 'phoneCode', className: 'dadao_input dadao_input_lg', type: 'text', placeholder: '\u9A8C\u8BC1\u7801' })
                                                 ),
                                                 _react2.default.createElement(
                                                     'div',
@@ -64551,7 +64726,7 @@ var AccountBind = function (_React$Component6) {
                                                     _react2.default.createElement(
                                                         'button',
                                                         { onClick: this.bindRightNow.bind(this), className: 'dadao_btn dadao_btn_lg dadao_btn_primary' },
-                                                        '\u7ED1\u5B9A\u624B\u673A\u53F7\u7801'
+                                                        '\u786E\u8BA4\u4FEE\u6539'
                                                     )
                                                 )
                                             )
@@ -64574,11 +64749,11 @@ var AccountBind = function (_React$Component6) {
                                 _react2.default.createElement(
                                     'div',
                                     { className: 'fl account_label' },
-                                    '\u4FEE\u6539\u90AE\u7BB1\u65F6 \u5927\u9053\u6613\u56FE \u4F1A\u53D1\u9001',
+                                    '\u4FEE\u6539\u90AE\u7BB1\u65F6 \u5E73\u53F0 \u4F1A\u53D1\u9001',
                                     _react2.default.createElement('br', null),
                                     '\u4E00\u5C01\u90AE\u4EF6\u5230\u65B0\u7684\u90AE\u7BB1\u5730\u5740\uFF0C\u8BF7',
                                     _react2.default.createElement('br', null),
-                                    '\u6309\u7167\u90AE\u7BB1\u4E2D\u7684\u94FE\u63A5\u91CD\u7F6E\u4F60\u7684\u90AE\u7BB1\u3002'
+                                    '\u4F7F\u7528\u90AE\u7BB1\u4E2D\u7684\u9A8C\u8BC1\u7801\u3002'
                                 ),
                                 _react2.default.createElement(
                                     'div',
@@ -64589,7 +64764,9 @@ var AccountBind = function (_React$Component6) {
                                         _react2.default.createElement(
                                             'div',
                                             { className: 'pheone_input li' },
-                                            _react2.default.createElement('input', { ref: 'emailAddress', type: 'text', className: 'dadao_input dadao_input_lg', placeholder: '\u8BF7\u8F93\u5165\u60A8\u7684\u90AE\u7BB1\u5730\u5740' })
+                                            _react2.default.createElement('input', { ref: 'emailAddress', type: 'text', className: 'dadao_input dadao_input_lg', placeholder: '\u8BF7\u8F93\u5165\u60A8\u7684\u90AE\u7BB1\u5730\u5740',
+                                                onBlur: this.getEmailBlur.bind(this),
+                                                defaultValue: isRemenberEmail })
                                         ),
                                         _react2.default.createElement(
                                             'div',
@@ -64597,6 +64774,24 @@ var AccountBind = function (_React$Component6) {
                                             _react2.default.createElement(
                                                 'div',
                                                 { className: 'iblock get_code' },
+                                                _react2.default.createElement('input', { ref: 'emailCode', className: 'dadao_input dadao_input_lg', type: 'text', placeholder: '\u9A8C\u8BC1\u7801' })
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'iblock send_code' },
+                                                _react2.default.createElement(
+                                                    'button',
+                                                    { disabled: isGetting1, ref: 'sendEmailCodeBtn', onClick: this.getEmailCode.bind(this), className: 'dadao_btn dadao_btn_lg dadao_btn_primary' },
+                                                    '\u83B7\u53D6\u9A8C\u8BC1\u7801'
+                                                )
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'li' },
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'iblock cancel' },
                                                 _react2.default.createElement(
                                                     'button',
                                                     { onClick: function () {
@@ -64607,11 +64802,11 @@ var AccountBind = function (_React$Component6) {
                                             ),
                                             _react2.default.createElement(
                                                 'div',
-                                                { className: 'iblock send_code' },
+                                                { className: 'iblock get_sure' },
                                                 _react2.default.createElement(
                                                     'button',
-                                                    { onClick: this.sendEmailCode.bind(this), className: 'dadao_btn dadao_btn_lg dadao_btn_primary' },
-                                                    '\u53D1\u9001\u90AE\u7BB1\u9A8C\u8BC1'
+                                                    { onClick: this.bindEmailRightNow.bind(this), className: 'dadao_btn dadao_btn_lg dadao_btn_primary' },
+                                                    '\u786E\u8BA4\u4FEE\u6539'
                                                 )
                                             )
                                         )
